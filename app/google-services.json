@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "983622290385",
+    "firebase_url": "https://sipcsi-73dd7.firebaseio.com",
+    "project_id": "sipcsi-73dd7",
+    "storage_bucket": "sipcsi-73dd7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:983622290385:android:756bb47734d96765",
+        "android_client_info": {
+          "package_name": "com.bufeotec.sipcsi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "983622290385-c101h8bujobi5mm0m8rp27ku2rjkcj67.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bufeotec.sipcsi",
+            "certificate_hash": "c3bd576bd278127d090e1469d22d835196800580"
+          }
+        },
+        {
+          "client_id": "983622290385-4momt104e9b0gltbeojpeil49giqvv0r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALtxaoYV2fnpYtBQ58LIbRoLznPGl356A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "983622290385-4momt104e9b0gltbeojpeil49giqvv0r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

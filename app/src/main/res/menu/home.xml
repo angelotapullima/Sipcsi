@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/gps"
+        android:icon="@drawable/puntos_turisticos"
+        android:title="Empezar Traking" />
+</menu>

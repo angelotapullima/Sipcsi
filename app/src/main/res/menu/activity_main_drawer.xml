@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/pueblo"
+            android:icon="@drawable/publicaciones"
+            android:title="Pueblo Opina" />
+
+        <item
+            android:id="@+id/nav_camera"
+            android:icon="@drawable/mapa_incidencias"
+            android:title="Mapa de incidencias" />
+        <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/seguimiento_todos"
+            android:title="Seguimiento a todos" />
+        <item
+            android:id="@+id/nav_slideshow"
+            android:icon="@drawable/seguimiento_unidad"
+            android:title="Seguimiento por Unidad" />
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/lista_alertas"
+            android:title="Lista de Alertas" />
+        <item
+            android:id="@+id/Misatenciones"
+            android:icon="@drawable/mis_atenciones"
+            android:title="Mis atenciones" />
+        <item
+            android:id="@+id/Misalertas"
+            android:icon="@drawable/mis_alertas"
+            android:title="Mis Alertas" />
+
+        <item
+            android:id="@+id/parte"
+            android:icon="@drawable/parte_apoyo"
+            android:title="Parte Apoyo" />
+        <item
+            android:id="@+id/parteD"
+            android:icon="@drawable/parte_delito"
+            android:title="Parte Delito" />
+        <item
+            android:id="@+id/parteA"
+            android:icon="@drawable/parte_accidente"
+            android:title="Parte Accidente" />
+        <item
+            android:id="@+id/Basurero"
+            android:icon="@drawable/seguimiento_unidad"
+            android:title="Monitoreo Basurero" />
+
+        <item
+            android:id="@+id/tracking"
+            android:icon="@drawable/monitoreo_basurero"
+            android:title="Tracking  Basurero" />
+        <item
+            android:id="@+id/puntoT"
+            android:icon="@drawable/puntos_turisticos"
+            android:title="Puntos Turisticos" />
+
+        <item
+            android:id="@+id/perfil"
+            android:icon="@drawable/perfil"
+            android:title="Perfil" />
+
+
+    </group>
+
+    <item android:title="Información Importante">
+        <menu>
+            <item
+                android:id="@+id/Nemergencias"
+                android:icon="@drawable/llamada_emergencia"
+                android:title="Números de Emergencia" />
+            <item
+                android:id="@+id/Pauxilios"
+                android:icon="@drawable/primeros_auxilios"
+                android:title="Primeros Auxilios" />
+            <item
+                android:id="@+id/tips"
+                android:icon="@drawable/puntos_turisticos"
+                android:title="Tips" />
+            <item
+                android:id="@+id/about"
+                android:icon="@drawable/bufeo"
+                android:title="¿Quienes Somos?" />
+            <item
+                android:id="@+id/gps"
+                android:icon="@drawable/mar"
+                android:title="Empezar Traking" />
+        </menu>
+    </item>
+
+
+
+</menu>
