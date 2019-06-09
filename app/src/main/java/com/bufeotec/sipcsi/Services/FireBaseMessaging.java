@@ -1,15 +1,23 @@
 package com.bufeotec.sipcsi.Services;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.bufeotec.sipcsi.Activitys.Login;
 import com.bufeotec.sipcsi.Activitys.MapaAlertas;
 import com.bufeotec.sipcsi.Models.Notificaciones;
 import com.bufeotec.sipcsi.Principal.MainActivity;
+import com.bufeotec.sipcsi.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -21,6 +29,7 @@ public class FireBaseMessaging extends FirebaseMessagingService {
     private static final String DIRECCION= "direccion";
     private static final String CONTENIDO= "Contenido";
     private final static String CHANNEL_ID = "NOTIFICACION";
+    public final static int NOTIFICACION_ID = 0;
 
 
     String tipo, titulo,direccion, contenido;
@@ -41,19 +50,24 @@ public class FireBaseMessaging extends FirebaseMessagingService {
         contenido=remoteMessage.getData().get(CONTENIDO);
 
         Notificaciones notificaciones = new Notificaciones();
-        //notificaciones.setTitle(remoteMessage.getNotification().getTitle());
-        //notificaciones.setDescription(remoteMessage.getNotification().getBody());
+        notificaciones.setTitle(remoteMessage.getNotification().getTitle());
+        notificaciones.setDescription(remoteMessage.getNotification().getBody());
         notificaciones.getDescount(remoteMessage.getData().get(TIPO));
         createNotificationChannel();
 
         //comentada de codigo
-        if (tipo.equals("alarmas")){
-            alarma(titulo,direccion, tipo);
+        if (tipo==null){
+            ShowNotification(notificaciones);
+        }else{
+            if (tipo.equals("alarmas")){
+                alarma(titulo,direccion, tipo);
 
-        }if(tipo.equals("finalizar")){
-            finalizar(contenido ,tipo);
-            finalizarEnMapaalertas(contenido ,tipo);
+            }if(tipo.equals("finalizar")){
+                finalizar(contenido ,tipo);
+                finalizarEnMapaalertas(contenido ,tipo);
+            }
         }
+
     }
 
     public void alarma (String title ,String direc , String tipo){
@@ -88,6 +102,33 @@ public class FireBaseMessaging extends FirebaseMessagingService {
             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(notificationChannel);
         }
+    }
+
+    private void ShowNotification(Notificaciones notificaciones ){
+
+        Intent i = new Intent(this, Login.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,NOTIFICACION_ID,i,PendingIntent.FLAG_ONE_SHOT);
+        Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        NotificationCompat.Builder notificacionBuilder = new NotificationCompat.Builder(this,CHANNEL_ID)
+                .setSmallIcon(R.drawable.posible)
+                .setContentTitle(notificaciones.getTitle())
+                .setContentText(notificaciones.getDescription())
+                .setAutoCancel(true)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setSound(defaultSound)
+                .setPriority(Notification.PRIORITY_MAX)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (notificationManager != null) {
+            notificationManager.notify(NOTIFICACION_ID,notificacionBuilder.build());
+        }
+
+
     }
 
 }

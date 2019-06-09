@@ -59,6 +59,7 @@ import com.bufeotec.sipcsi.Activitys.DetalleAlarmas;
 import com.bufeotec.sipcsi.Activitys.GPSinactivo;
 import com.bufeotec.sipcsi.BuildConfig;
 import com.bufeotec.sipcsi.Fragments.AboutFragment;
+import com.bufeotec.sipcsi.Fragments.FeedFragment;
 import com.bufeotec.sipcsi.Fragments.InformacionFragment;
 import com.bufeotec.sipcsi.Fragments.TipsFragment;
 import com.bufeotec.sipcsi.Fragments.ListAlertas;
@@ -113,7 +114,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         TrackingBasureroFragment.OnFragmentInteractionListener, View.OnClickListener,
         PublicacionesFragment.OnFragmentInteractionListener,
         InformacionFragment.OnFragmentInteractionListener,
-        AboutFragment.OnFragmentInteractionListener {
+        AboutFragment.OnFragmentInteractionListener,
+        FeedFragment.OnFragmentInteractionListener {
 
 
     public static final String ALARMA= "ALARMA";
@@ -134,10 +136,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     String usuario ,clave;
     TextView Nusuario,EmailU;
     private static final String TAG = "FirebaseToken";
-    static SharedPreferences pref;
     static FloatingActionMenu fab;
     FloatingActionButton menu_delito,menu_accidente,menu_zonavial;
-    SharedPreferences sharedPreferences;
+    static SharedPreferences sharedPreferences;
     BroadcastReceiver BR;
 
 
@@ -241,15 +242,16 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                     @Override
                     public void onSuccess(InstanceIdResult instanceIdResult) {
                         tokenNuevo = instanceIdResult.getToken();
-                        if (!tokenNuevo.equals(token)) {
+                        if (tokenNuevo.equals(token)) {
                             Log.d(TAG, "todo esta chevere 1  " + tokenNuevo);
                             Log.d(TAG, "todo esta chevere 2: " + token);
                             //al ser diferente llamamos al asyntask GetActualizar
 
-                            new GetActualizar().execute();
+                            //new GetActualizar().execute();
                         } else {
-                            Log.d(TAG, "diferente 1  " + tokenNuevo);
-                            Log.d(TAG, "diferente 2: " + token);
+                            Log.d(TAG, "diferente nuevo  " + tokenNuevo);
+                            Log.d(TAG, "diferente antiguo: " + token);
+                            new GetActualizar().execute();
                         }
                     }
                 });
@@ -516,7 +518,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
-            fragment = new AboutFragment();
+            fragment = new FeedFragment();
             fragmentTransaction.replace(R.id.contenedor, fragment).addToBackStack("frag").commit();
 
         }
@@ -594,9 +596,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if(response.trim().equals("1")){
-                    Log.i("actualizartoken: ",""+response);
-                }
+                Log.i("actualizartoken: ",""+response);
+
             }
 
         }, new Response.ErrorListener() {
@@ -626,21 +627,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
     //funcion para guardar los accesos obtenidos desde el login
-    public void guardarAcceso(String usuario, String clave,String dis , String usua){
 
-        SharedPreferences.Editor editor =pref.edit();
-        editor.putString("usuario",usuario);
-        editor.putString("pass",clave);
-        editor.putString("distrito",dis);
-        editor.putString("id",usua);
-        editor.apply();
-        Log.d(TAG, "preferencias guardadas ");
-
-    }
 
     //funcion para elimainar las preferencias al cerrar Sesion
     public static void removerLogin(){
-        pref.edit().clear().apply();
+        sharedPreferences.edit().clear().apply();
     }
 
 

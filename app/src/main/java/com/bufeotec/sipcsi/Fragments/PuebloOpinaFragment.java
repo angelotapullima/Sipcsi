@@ -86,16 +86,15 @@ public class PuebloOpinaFragment extends Fragment implements View.OnClickListene
 
     AdaptadorListadoQuejas adaptadorListadoQuejas;
     public ArrayList<Queja> arrayqueja;
-    public static ArrayList<Queja> arrayquejactual;
     public static ArrayList<Areas> arrayArea;
     ArrayList<String> arrayarea;
     DataConnection dc,dc2;
-    static DataConnection dc1;
     RecyclerView rcv_quejas;
     ProgressBar progressBar;
     CardView cdv_mensaje;
     //    CircleImageView civ_fotoUsuario;
     TextView txt_nombreUsuario;
+
     LinearLayout ll_adjuntarFoto;
     EditText edt_descripcionQeuja;
     Button btn_Camara, btn_registrarQeuja;
@@ -157,20 +156,22 @@ public class PuebloOpinaFragment extends Fragment implements View.OnClickListene
         activity=getActivity();
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pueblo_opina, container, false);
-        //Showtoolbar("ffk",false,view);
+
         rcv_quejas = view.findViewById(R.id.rcv_quejas);
         progressBar = view.findViewById(R.id.progressbar);
         cdv_mensaje = view.findViewById(R.id.cdv_mensaje);
         txt_nombreUsuario = view.findViewById(R.id.txt_nombreUsuario);
-        edt_descripcionQeuja = view.findViewById(R.id.edt_descripcionQeuja);
-        img_fotoQueja = view.findViewById(R.id.img_fotoQueja);
         spn_areas = view.findViewById(R.id.spn_areas);
-        btn_registrarQeuja = view.findViewById(R.id.btn_registrarQeuja);
-        btn_Camara = view.findViewById(R.id.btn_Camara);
+
+        //bottomshet
         cbx_adjuntarfoto = view.findViewById(R.id.cbx_adjuntarfoto);
         ll_adjuntarFoto = view.findViewById(R.id.ll_adjuntarFoto);
         btnBottomSheet = view.findViewById(R.id.btn_bottom_sheet);
         fab=view.findViewById(R.id.multiple_Actions);
+        edt_descripcionQeuja = view.findViewById(R.id.edt_descripcionQeuja);
+        img_fotoQueja = view.findViewById(R.id.img_fotoQueja);
+        btn_registrarQeuja = view.findViewById(R.id.btn_registrarQeuja);
+        btn_Camara = view.findViewById(R.id.btn_Camara);
 
 
 
@@ -209,7 +210,6 @@ public class PuebloOpinaFragment extends Fragment implements View.OnClickListene
 
         btn_registrarQeuja.setOnClickListener(this);
         btn_Camara.setOnClickListener(this);
-        context = getContext();
         btnBottomSheet.setOnClickListener(this);
 
         View headerLayout1 = view.findViewById(R.id.bottomPueblo);

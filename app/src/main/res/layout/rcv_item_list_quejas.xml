@@ -131,13 +131,28 @@
                     android:text="Delanterojjnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjhbhhbhbhbhhhhhhhhhhhhhhhh"
                     android:textStyle="italic" />
 
-               <ImageView
-                   android:id="@+id/img_fotoQuejaItem"
-                   android:layout_width="match_parent"
-                   android:layout_height="300dp"
-                   android:layout_gravity="center"
-                   android:scaleType="centerCrop"
-                   android:src="@mipmap/ic_launcher"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/img_fotoQuejaItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/ic_launcher"/>
+                <ProgressBar
+                    android:id="@+id/prog_fotoPublicacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:theme="@style/CircularProgress"
+                    android:layout_marginTop="50dp"
+                    android:layout_centerInParent="true"/>
+
+            </RelativeLayout>
+
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

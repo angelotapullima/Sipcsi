@@ -1,12 +1,14 @@
 package com.bufeotec.sipcsi.Adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -17,9 +19,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bufeotec.sipcsi.Models.Queja;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.UniversalImageLoader;
 import com.bufeotec.sipcsi.WebServices.VolleySingleton;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,9 +38,11 @@ public class AdaptadorListadoQuejas extends RecyclerView.Adapter<AdaptadorListad
     private int layoutpadre;
     Context context;
     Queja obj;
+    UniversalImageLoader universalImageLoader;
+    SharedPreferences preferencesUser;
     StringRequest stringRequest;
     private  OnItemClickListener listener;
-    boolean estado = false;
+    String foto ;
 
     public AdaptadorListadoQuejas() {
     }
@@ -46,13 +52,15 @@ public class AdaptadorListadoQuejas extends RecyclerView.Adapter<AdaptadorListad
         this.layoutpadre = layoutpadre;
         this.context = context;
         this.listener = listener;
+        universalImageLoader = new UniversalImageLoader(context);
+        preferencesUser = context.getSharedPreferences("User", Context.MODE_PRIVATE);
     }
 
     public class QuejaViewHolder extends RecyclerView.ViewHolder{
 
         private ImageView img_fotoQueja;
         TextView like;
-       // private CircleImageView civ_fotoUsuario;
+        private ProgressBar prog_fotoPublicacion;
         private TextView txt_nombreUsuario, txt_fechaQueja,  txt_descripcionQueja,txt_destinoQueja,nlike;
 
 
@@ -61,6 +69,7 @@ public class AdaptadorListadoQuejas extends RecyclerView.Adapter<AdaptadorListad
 
             img_fotoQueja=  itemView.findViewById(R.id.img_fotoQuejaItem);
             txt_destinoQueja=  itemView.findViewById(R.id.txt_destinoQueja);
+            prog_fotoPublicacion = itemView.findViewById(R.id.prog_fotoPublicacion);
             like=  itemView.findViewById(R.id.like);
             nlike=  itemView.findViewById(R.id.nlike);
             txt_nombreUsuario=  itemView.findViewById(R.id.txt_nombreUsuario);
@@ -72,33 +81,10 @@ public class AdaptadorListadoQuejas extends RecyclerView.Adapter<AdaptadorListad
 
         public void bid(final Queja queja,final OnItemClickListener listener){
 
-
-            final String id_queja =queja.getQueja_id();
-
-            like.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!estado){
-                        like.setBackgroundResource(R.drawable.brazo_white);
-                        int cant = Integer.parseInt(obj.getCantidad());
-                        String can = String.valueOf(cant);
-                        nlike.setText(can);
-                        dislike(id_queja);
-                        estado=true;
-
-
-                    }else{
-                        like.setBackgroundResource(R.drawable.brazo);
-
-                        int cant = Integer.parseInt(obj.getCantidad());
-                        String can = String.valueOf(cant +1);
-                        nlike.setText(can);
-                        darlike(id_queja);
-                        estado=false;
-                    }
-
-
-
+                    listener.onItemClick(queja,getAdapterPosition());
                 }
             });
 
@@ -112,15 +98,18 @@ public class AdaptadorListadoQuejas extends RecyclerView.Adapter<AdaptadorListad
         return new QuejaViewHolder(view);
     }
 
+
+    int posicionlocalc;
     @Override
     public void onBindViewHolder(final QuejaViewHolder holder, int position) {
 
         obj = array.get(position);
 
+        foto = obj.getQueja_foto();
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
 
 
         if (obj.getEstado_like().equals("0")){
-            estado = true;
             holder.like.setBackgroundResource(R.drawable.brazo_white);
 
         }else{
@@ -133,12 +122,13 @@ public class AdaptadorListadoQuejas extends RecyclerView.Adapter<AdaptadorListad
         holder.txt_fechaQueja.setText(obj.getQueja_fecha());
         holder.nlike.setText(obj.getCantidad());
         holder.txt_descripcionQueja.setText(obj.getQueja_descripcion());
-        if (obj.getQueja_foto().equals("0")){
+
+        //UniversalImageLoader.setImage("http://"+IP+"/"+obj.getQueja_foto(),holder.img_fotoQueja,holder.prog_fotoPublicacion);
+        if (foto.equals("0")){
             holder.img_fotoQueja.setVisibility(View.GONE);
         }else{
-            Glide.with(context).load("http://"+IP+"/"+ obj.getQueja_foto())
-                    .apply(new RequestOptions().override(800, 400)).into(holder.img_fotoQueja);
 
+            UniversalImageLoader.setImage("http://"+IP+"/"+array.get(position).getQueja_foto(),holder.img_fotoQueja,holder.prog_fotoPublicacion);
         }
          holder.bid(obj,listener);
     }

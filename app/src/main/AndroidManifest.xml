@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activitys.feed"></activity>
+        <activity android:name=".Activitys.Publicar"></activity>
         <activity android:name=".Activitys.ListAlertas">
             <intent-filter>
                 <action android:name="ListAlertas" />
@@ -72,7 +72,6 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".Activitys.PuebloOpina" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
