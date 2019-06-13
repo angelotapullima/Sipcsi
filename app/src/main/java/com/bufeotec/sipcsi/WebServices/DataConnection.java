@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.bufeotec.sipcsi.Activitys.Login;
 import com.bufeotec.sipcsi.Models.Accidentes;
 import com.bufeotec.sipcsi.Models.Alertas;
 import com.bufeotec.sipcsi.Models.Apoyo;
@@ -42,7 +43,7 @@ public class DataConnection extends AppCompatActivity {
 
     private static final String TAG = "DataConnection" ;
     public String funcion,idusuario;
-    public String parametros,respuesta,cargarDatos;
+    public String parametros,respuesta = "false",cargarDatos;
     boolean mensajeprogres;
     Queja queja;
 
@@ -321,15 +322,22 @@ public class DataConnection extends AppCompatActivity {
                     valorcodigo = jsonNodev.optString("valor");
                     rol = jsonNodev.optString("rol");
 
-                    if(valorcodigo.equalsIgnoreCase("2") || valorcodigo.equalsIgnoreCase("3")){
+                    if(!valorcodigo.equals("1")){
                         respuesta = "false";
+                        obj=null;
+                    }else{
+                        respuesta = "true";
+
+                    /*if(valorcodigo.equalsIgnoreCase("2") || valorcodigo.equalsIgnoreCase("3")){
+                        respuesta = "false";
+
                         obj = null;
                     }else if(rol.equalsIgnoreCase("3")) {
                         respuesta = "false";
                         obj = null;
                     }else{
 
-                        respuesta = "true";
+                        respuesta = "true";*/
 
 
                         //resultJSON = json_data.getJSONArray("results");
@@ -901,6 +909,7 @@ public class DataConnection extends AppCompatActivity {
                     public void run() {
                         if(valorcodigo.equalsIgnoreCase("2")){
                             Toast.makeText(context, "Datos incorrectos", Toast.LENGTH_SHORT).show();
+
                         }
                         else if(valorcodigo.equalsIgnoreCase("3")){
                             Toast.makeText(context, "Cuenta desactivada", Toast.LENGTH_SHORT).show();

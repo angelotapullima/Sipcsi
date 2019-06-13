@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                             Log.d(TAG, "todo esta chevere 2: " + token);
                             //al ser diferente llamamos al asyntask GetActualizar
 
-                            //new GetActualizar().execute();
+                            new GetActualizar().execute();
                         } else {
                             Log.d(TAG, "diferente nuevo  " + tokenNuevo);
                             Log.d(TAG, "diferente antiguo: " + token);
@@ -311,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public void ShowHome (){
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.contenedor,new PuebloOpinaFragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.contenedor,new FeedFragment()).commit();
     }
 
     @Override
@@ -518,7 +518,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
-            fragment = new FeedFragment();
+            fragment = new AboutFragment();
             fragmentTransaction.replace(R.id.contenedor, fragment).addToBackStack("frag").commit();
 
         }
@@ -640,6 +640,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public void dialogoAlarma(String titles , String direc){
 
         //dialog.setContentView(R.layout.dialog_notify);
+
 
         tituloNoti = dialog1.findViewById(R.id.tituloNoti);
         direccion = dialog1.findViewById(R.id.Direccion);

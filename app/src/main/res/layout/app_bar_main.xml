@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/coordinator11"
+    android:fitsSystemWindows="true"
     tools:context=".Principal.MainActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -24,6 +25,9 @@
 
 
     <include layout="@layout/content_main" />
+
+
+
 
 
     <com.github.clans.fab.FloatingActionMenu

@@ -133,6 +133,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:id="@+id/relfoto"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:id="@+id/img_fotoQuejaItem"
@@ -172,24 +173,25 @@
                 android:layout_margin="5dp"
                 android:layout_gravity="center_vertical"
                 android:orientation="horizontal">
+
+
+                <ImageButton
+                    android:id="@+id/like"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/brazo_white" />
+
                 <TextView
                     android:id="@+id/nlike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
                     android:textSize="19sp"
                     android:textColor="#757575"
                     android:textStyle="bold|italic"
                     android:text="4"/>
-
-                <TextView
-                    android:id="@+id/like"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:button="@null"
-                    android:background="@drawable/btn_check" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

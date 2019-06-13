@@ -18,8 +18,6 @@ import com.bufeotec.sipcsi.Models.Usuario;
 import com.bufeotec.sipcsi.Principal.MainActivity;
 import com.bufeotec.sipcsi.R;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
-import com.bumptech.glide.Glide;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 public class Login extends AppCompatActivity {
 
@@ -33,12 +31,8 @@ public class Login extends AppCompatActivity {
     ImageView gif;
     AutoCompleteTextView act_usuario;
     SharedPreferences sharedPreferences;
+    String acceso;
     String dirImagen ="http://www.guabba.com/accidentestransito/media/loader.gif";
-
-
-    private final int REQUEST_CHECK_SETTINGS = 0x1;
-    private GoogleApiClient mGoogleApiClient;
-    private final int ACCESS_FINE_LOCATION_INTENT_ID = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +51,7 @@ public class Login extends AppCompatActivity {
 
 
         entrar();
-        //initGoogleAPIClient();
-        //startLocationButtonClick();
+
 
         txt_resgistrate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,6 +146,7 @@ public class Login extends AppCompatActivity {
 
 
 */
+
 
 
 

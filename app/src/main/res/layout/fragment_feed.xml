@@ -12,12 +12,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:showIn="@layout/activity_pueblo_opina">
+        android:orientation="vertical">
 
 
         <TextView
-            android:id="@+id/btn_bottom_sheet"
+            android:id="@+id/btn_publicar"
             android:layout_width="match_parent"
             android:padding="8dp"
             android:layout_margin="10dp"

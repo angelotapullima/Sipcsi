@@ -524,8 +524,8 @@ public class DetalleAlarmas extends AppCompatActivity implements OnMapReadyCallb
                             lon = String.valueOf(mIni.getPosition().longitude);
 
                             try {
-                                List<Address> dire = geo.getFromLocation(mIni.getPosition()
-                                        .latitude,mIni.getPosition().longitude,1);
+                                List<Address> dire = geo.getFromLocation(mIni.getPosition().latitude,
+                                        mIni.getPosition().longitude,1);
                                 direc.setText(dire.get(0).getAddressLine(0));
                             } catch (IOException e) {
                                 e.printStackTrace();

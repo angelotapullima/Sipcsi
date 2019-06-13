@@ -3,40 +3,34 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#53292922"
     android:gravity="center">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:background="@color/white"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_centerInParent="true"
         android:layout_height="wrap_content">
-        <!--<RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/closeNotify"
-                android:text="X"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="3dp"
-                android:textSize="24sp"/>
-        </RelativeLayout>-->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:tint="@color/colorPrimary"
+                android:src="@drawable/ic_verified_user"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:id="@+id/tituloNoti"
-                android:textSize="28sp"
+                android:textSize="20sp"
                 android:text="Nueva Alarma generada"/>
 
             <TextView
@@ -44,21 +38,24 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:id="@+id/Direccion"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:text="Solicitud de Alarma"
                 />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/overlay_dark_10">
+
+            </View>
             <Button
                 android:layout_width="match_parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/accent"
+                android:layout_height="35dp"
+                android:background="@color/white"
                 android:text="Ver lista de Alertas"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPrimary"
                 android:id="@+id/btnver"
-                android:layout_marginBottom="10dp"
                 />
 
         </LinearLayout>
