@@ -119,12 +119,12 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_gravity="center"
-                    android:textColor="@color/light_blue_400"
+                    android:textColor="#757575"
                     android:textSize="15dp"
 
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="Delanterojjnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjhbhhbhbhbhhhhhhhhhhhhhhhh"
+                    android:text="nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjhbhhbhbhbhhhhhhhhhhhhhhhh"
                     android:textStyle="italic" />
 
             <RelativeLayout
