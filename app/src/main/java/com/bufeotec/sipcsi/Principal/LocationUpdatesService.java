@@ -172,7 +172,7 @@ public class LocationUpdatesService extends Service {
             CharSequence name = getString(R.string.app_name);
             // Create the channel for the notification
             NotificationChannel mChannel =
-                    new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
+                    new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_NONE);
 
             // Set the Notification Channel for the Notification Manager.
             mNotificationManager.createNotificationChannel(mChannel);
@@ -299,13 +299,12 @@ public class LocationUpdatesService extends Service {
                 .addAction(R.drawable.posible, getString(R.string.remove_location_updates),
                         servicePendingIntent)
                 .setContentText(text)
-                //.setContentTitle("Servicio de Ubicación en funcionamiento")
                 .setContentTitle(Utils.getLocationTitle(this))
                 .setOngoing(true)
-                .setPriority(Notification.PRIORITY_HIGH)
+                .setSound(null)
                 .setSmallIcon(R.drawable.posible)
-                .setTicker(text)
-                .setWhen(System.currentTimeMillis());
+                .setTicker(text);
+
 
         // Set the Channel ID for Android O.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

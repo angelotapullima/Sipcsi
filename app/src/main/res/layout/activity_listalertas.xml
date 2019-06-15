@@ -32,7 +32,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
-            android:scrollingCache="true" >
+            android:scrollingCache="true"
+            android:layout_marginBottom="15dp">
 
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>

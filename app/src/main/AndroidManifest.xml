@@ -16,7 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activitys.Publicar"></activity>
         <activity android:name=".Activitys.ListAlertas">
             <intent-filter>
                 <action android:name="ListAlertas" />
@@ -26,7 +25,13 @@
         </activity>
         <activity android:name=".Activitys.GPSinactivo" />
         <activity android:name=".Activitys.DetallerPrimeroAuxilios" />
-        <activity android:name=".Activitys.Splash" />
+        <activity android:name=".Activitys.Splash" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".Activitys.MapaAlertas" />
         <activity
             android:name=".Activitys.DetalleAlarmas"
@@ -59,11 +64,7 @@
             android:name=".Activitys.Login"
             android:configChanges="screenSize|orientation"
             android:windowSoftInputMode="stateHidden">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Principal.MainActivity"

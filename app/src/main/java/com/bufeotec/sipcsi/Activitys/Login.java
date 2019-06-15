@@ -1,9 +1,13 @@
 package com.bufeotec.sipcsi.Activitys;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -31,7 +35,6 @@ public class Login extends AppCompatActivity {
     ImageView gif;
     AutoCompleteTextView act_usuario;
     SharedPreferences sharedPreferences;
-    String acceso;
     String dirImagen ="http://www.guabba.com/accidentestransito/media/loader.gif";
 
     @Override
@@ -50,7 +53,7 @@ public class Login extends AppCompatActivity {
 
 
 
-        entrar();
+        //entrar();
 
 
         txt_resgistrate.setOnClickListener(new View.OnClickListener() {
@@ -89,9 +92,20 @@ public class Login extends AppCompatActivity {
 
             }
         });
+        checkpermisos();
 
     }
 
+    public void checkpermisos() {
+        if ((ContextCompat.checkSelfPermission(Login.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+                || (ContextCompat.checkSelfPermission(Login.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
+
+            ActivityCompat.requestPermissions(Login.this, new String[]{
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            }, 1);
+        }
+    }
 
     public void entrar(){
 

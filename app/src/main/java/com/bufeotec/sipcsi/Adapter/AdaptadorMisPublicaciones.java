@@ -23,8 +23,6 @@ import com.bufeotec.sipcsi.Models.Queja;
 import com.bufeotec.sipcsi.R;
 import com.bufeotec.sipcsi.Util.UniversalImageLoader;
 import com.bufeotec.sipcsi.WebServices.VolleySingleton;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.json.JSONArray;

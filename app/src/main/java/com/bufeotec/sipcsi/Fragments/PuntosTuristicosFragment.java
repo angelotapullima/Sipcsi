@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.bufeotec.sipcsi.Models.Puntos;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.UniversalImageLoader;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdate;
@@ -295,8 +296,9 @@ public class PuntosTuristicosFragment extends Fragment implements OnMapReadyCall
             Tnombre.setText(puntos.getNombre());
             Tdescripcion.setText(puntos.getDescripcion());
             Tdireccion.setText(puntos.getDireccion());
+            //UniversalImageLoader.setImage("http://"+IP+"/"+ puntos.getImagen(),Timagen,null);
             Glide.with(context)
-                    .load("http://"+IP+"/"+ puntos.getImagen())//Config.URL_IMAGES_PUBLIC + url__img+".jpg")
+                  .load("http://"+IP+"/"+ puntos.getImagen())//Config.URL_IMAGES_PUBLIC + url__img+".jpg")
                     //.crossFade()
                     //.centerCrop()
                     //.placeholder(R.drawable.placeholder)

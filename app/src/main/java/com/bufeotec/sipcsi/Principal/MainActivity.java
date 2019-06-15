@@ -1,6 +1,7 @@
 package com.bufeotec.sipcsi.Principal;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
@@ -292,6 +293,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             }
         };
         GPSActivo();
+        despuesde10();
     }
 
 
@@ -356,6 +358,24 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
 
+    public void despuesde10(){
+        Handler handler = new Handler();
+
+        //Llamamos al método postDelayed
+        handler.postDelayed(new Runnable() {
+            public void run() {
+
+                Log.i("funciones", " despuesde10 " );
+                if (!checkPermissions()) {
+                    requestPermissions();
+                } else {
+                    mService.requestLocationUpdates();
+                }
+       //código que se ejecuta tras el "delay"
+            }
+        }, 10000); // 2 segundos de "delay"
+
+    }
     public void GPSActivo (){
 
         LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);

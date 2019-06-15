@@ -35,6 +35,7 @@ import android.widget.TextView;
 
 import com.bufeotec.sipcsi.Models.Puntos;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.UniversalImageLoader;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.location.LocationServices;
@@ -59,6 +60,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import static com.bufeotec.sipcsi.Services.FireBaseMessaging.TAG;
+import static com.bufeotec.sipcsi.WebServices.DataConnection.IP;
 
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener  {
@@ -141,6 +143,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         context = getContext();
         getActivity().setTitle("Mapa de incidencias");
         gif=view.findViewById(R.id.gif);
+        universalImageLoader = new UniversalImageLoader(context);
         FrameGif=view.findViewById(R.id.FrameGif);
 
 
@@ -359,6 +362,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     }
 
 
+    UniversalImageLoader universalImageLoader;
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -411,10 +415,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         FrameGif.setVisibility(View.VISIBLE);
 
         if(isGif(dirImagen)){
+            UniversalImageLoader.setImage(dirImagen,gif,null);
             Glide.with(context).asGif().load(dirImagen).into(gif);
         }
         else{
             Glide.with(context).load(dirImagen).into(gif);
+
         }
         dc = new DataConnection(getActivity(),"mostrarPuntos",obj,false);
         new GetPuntos().execute();

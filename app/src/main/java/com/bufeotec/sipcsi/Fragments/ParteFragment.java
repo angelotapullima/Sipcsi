@@ -83,8 +83,8 @@ public class ParteFragment extends Fragment implements View.OnClickListener,OnMa
     private static final String CERO = "0";
     private static final String DOS_PUNTOS = ":";
     Button btnMapaApoyo,btn_parte;
-    EditText NumeroParte,Destinatario,Asunto,Vehiculo,Direccion,nombresP1,nombreP2,nombreP3,dniP1,dniP2,dniP3,EdadP1,EdadP2,EdadP3,Descripcion;
-    EditText TipoDelito,TipoArma;
+    EditText Destinatario,Asunto,Direccion,nombresP1,nombreP2,nombreP3,dniP1,dniP2,dniP3,EdadP1,EdadP2,EdadP3,Descripcion;
+    EditText TipoDelito;
     ImageView mas1,mas2;
     View view2,view3;
     TextView DireFrame,Completado,titulo,Fecha,Hora;
@@ -191,7 +191,6 @@ public class ParteFragment extends Fragment implements View.OnClickListener,OnMa
         layoutDelito=view.findViewById(R.id.layoutDelito);
         spn_causas= view.findViewById(R.id.spn_causas);
         TipoDelito=view.findViewById(R.id.TipoDelito);
-        TipoArma=view.findViewById(R.id.TipoArma);
 
         if (data.equals("apoyo")){
             titulo.setText("Parte Apoyo");
@@ -616,7 +615,6 @@ public class ParteFragment extends Fragment implements View.OnClickListener,OnMa
                 String edad2= EdadP2.getText().toString();
                 String edad3= EdadP3.getText().toString();
                 String Tips= TipoDelito.getText().toString();
-                String TiArma= TipoArma.getText().toString();
 
 
 
@@ -638,7 +636,6 @@ public class ParteFragment extends Fragment implements View.OnClickListener,OnMa
                 parametros.put("dni3", dni3);
                 parametros.put("edad3", edad3);
                 parametros.put("tipo", Tips);
-                parametros.put("arma", TiArma);
                 parametros.put("distrito", distrito);
 
                 return parametros;

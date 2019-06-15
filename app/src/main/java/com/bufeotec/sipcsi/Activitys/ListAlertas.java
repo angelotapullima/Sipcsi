@@ -56,7 +56,7 @@ public class ListAlertas extends AppCompatActivity {
         setContentView(R.layout.activity_listalertas);
         context = this;
         showToolbar("Lista De Alertas",true);
-        pref = getSharedPreferences("Login", Context.MODE_PRIVATE);
+        pref = getSharedPreferences("User", Context.MODE_PRIVATE);
 
         progressBar = findViewById(R.id.progressbar);
         rcv_alertas_activity = findViewById(R.id.rcv_alertas_activity);
@@ -212,9 +212,9 @@ public class ListAlertas extends AppCompatActivity {
     }
 
     private String getDistritoPref(){
-        return pref.getString("distrito","");
+        return pref.getString("distrito_id","");
     }
     private String getIdPref(){
-        return pref.getString("id","");
+        return pref.getString("idusuario","");
     }
 }

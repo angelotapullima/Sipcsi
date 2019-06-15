@@ -70,6 +70,9 @@ public class MapaAlertas extends AppCompatActivity implements OnMapReadyCallback
     boolean run = false;
     TextView txtNombre ,txtdes,txtfe ,txtHo;
     Button btnAtendida;
+    static boolean valor = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -306,7 +309,9 @@ public class MapaAlertas extends AppCompatActivity implements OnMapReadyCallback
                         , (Double.parseDouble(listavehiculosalertas.get(i).getLongitud())));
             }
 
-            VolverPosicion(ultpos);
+            if (!valor){
+                VolverPosicion(ultpos);
+            }
 
         } else {
             Toast.makeText(MapaAlertas.this, "Lo sentimos, no tenemos Vehiculos activos en estos momentos", Toast.LENGTH_SHORT).show();
@@ -326,6 +331,7 @@ public class MapaAlertas extends AppCompatActivity implements OnMapReadyCallback
 
         CameraUpdate miUbicacion = CameraUpdateFactory.newCameraPosition(camPos);
         mMap.animateCamera(miUbicacion);
+        valor=true;
     }
 
     private void ejecutarCadaTiempo(){

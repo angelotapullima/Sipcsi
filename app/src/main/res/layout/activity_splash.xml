@@ -4,33 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/fondoazul"
     tools:context=".Activitys.Splash">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#0e131313">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:weightSum="1">
-            <LinearLayout
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/img_logo"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="vertical"
-                android:layout_weight=".5"></LinearLayout>
+                android:layout_height="180dp"
+                android:layout_gravity="center"
+                android:src="@drawable/posible" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="vertical"
-                android:layout_weight=".5"></LinearLayout>
+                android:id="@+id/lyt_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="vertical">
+
+                <com.bufeotec.sipcsi.Util.ViewLoadingDotsBounce
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorTextIcons" />
+            </LinearLayout>
+
+
         </LinearLayout>
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:layout_gravity="center"
-            android:src="@drawable/logo" />
 
     </FrameLayout>
 
