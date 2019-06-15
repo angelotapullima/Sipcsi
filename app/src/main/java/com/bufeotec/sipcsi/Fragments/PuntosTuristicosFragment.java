@@ -22,7 +22,6 @@ import android.widget.Toast;
 
 import com.bufeotec.sipcsi.Models.Puntos;
 import com.bufeotec.sipcsi.R;
-import com.bufeotec.sipcsi.Util.UniversalImageLoader;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdate;

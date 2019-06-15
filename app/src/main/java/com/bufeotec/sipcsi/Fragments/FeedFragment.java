@@ -42,6 +42,7 @@ import com.bufeotec.sipcsi.Adapter.AdaptadorListadoQuejas;
 import com.bufeotec.sipcsi.Models.Areas;
 import com.bufeotec.sipcsi.Models.Queja;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -59,7 +60,6 @@ import java.util.ArrayList;
 import cz.msebera.android.httpclient.Header;
 
 import static android.app.Activity.RESULT_OK;
-import static com.bufeotec.sipcsi.Principal.MainActivity.usuarioid;
 import static com.bufeotec.sipcsi.WebServices.DataConnection.IP;
 
 
@@ -83,6 +83,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener , Swi
     ImageView imagen_publicacion, fotocaptada;
     EditText et_post;
     ImageButton bt_photo;
+    Preferences pref;
 
     boolean valorFoto;
 
@@ -109,6 +110,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener , Swi
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
         context = getContext();
         activity = getActivity();
+        pref = new Preferences(context);
 
         rcv_quejas = view.findViewById(R.id.rcv_quejas);
         progressBar = view.findViewById(R.id.progressbar);
@@ -118,7 +120,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener , Swi
         cdv_mensaje.setVisibility(View.GONE);
 
 
-        dc = new DataConnection(activity, "listarQuejas", new Queja(usuarioid), false);
+        dc = new DataConnection(activity, "listarQuejas", new Queja(pref.getIdUsuarioPref()), false);
         new FeedFragment.GetQueja().execute();
 
 
@@ -134,7 +136,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener , Swi
     @Override
     public void onRefresh() {
 
-        dc = new DataConnection(activity, "listarQuejas", new Queja(usuarioid), false);
+        dc = new DataConnection(activity, "listarQuejas", new Queja(pref.getIdUsuarioPref()), false);
         new FeedFragment.GetQueja().execute();
     }
 
@@ -231,6 +233,8 @@ public class FeedFragment extends Fragment implements View.OnClickListener , Swi
 
     }
 
+
+
     private void dialogpublicar() {
 
 
@@ -253,6 +257,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener , Swi
 
 
         spn_areas = dialog.findViewById(R.id.spn_areas);
+        nombre_publicacion.setText(pref.getNombrePref());
         dc2 = new DataConnection(activity, "listarAreas", false);
         new FeedFragment.GetAreas().execute();
 
@@ -330,8 +335,8 @@ public class FeedFragment extends Fragment implements View.OnClickListener , Swi
                 params1.put("imagen", imagen);
             }
 
-            params1.put("usuario_id", usuarioid);
-            params1.put("distrito_id", "1");
+            params1.put("usuario_id", pref.getIdUsuarioPref());
+            params1.put("distrito_id", pref.getDistritoIdPref());
             params1.put("destino", arrayArea.get(spn_areas.getSelectedItemPosition() - 1).getArea_nombre());
             params1.put("queja", et_post.getText().toString());
 
@@ -491,7 +496,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener , Swi
                     File carpetas = new File(Environment.getExternalStorageDirectory() + "/Sipsi/", "Queja");
                     carpetas.mkdirs();
 
-                    String aleatorio = usuarioid + "_" + et_post.getText().toString();
+                    String aleatorio = pref.getIdUsuarioPref() + "_" + et_post.getText().toString();
                     String nombre = aleatorio + ".jpg";
                     File imagen = new File(carpetas, nombre);
 

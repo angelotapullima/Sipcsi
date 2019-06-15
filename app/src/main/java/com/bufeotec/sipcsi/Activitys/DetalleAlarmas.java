@@ -44,6 +44,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.WebServices.VolleySingleton;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -76,8 +77,6 @@ import java.util.Map;
 import cz.msebera.android.httpclient.Header;
 
 import static com.bufeotec.sipcsi.WebServices.DataConnection.IP;
-import static com.bufeotec.sipcsi.Principal.MainActivity.distrito;
-import static com.bufeotec.sipcsi.Principal.MainActivity.usuarioid;
 
 public class DetalleAlarmas extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
 
@@ -86,7 +85,7 @@ public class DetalleAlarmas extends AppCompatActivity implements OnMapReadyCallb
     Button btn_registro, btn_camara,btn_cancelar;
     Spinner tipo_delito;
     ImageView img_alarma;
-    String valor,distritoid,usuActual,lat,lon,des,alertas_id;
+    String valor,lat,lon,des,alertas_id;
     TextView textValor,direc;
     String respuesta;
     LinearLayout lDelito;
@@ -102,6 +101,8 @@ public class DetalleAlarmas extends AppCompatActivity implements OnMapReadyCallb
     String latitude,longitude;
     JSONObject json_data;
     CheckBox checkFoto;
+    Preferences pref;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +121,7 @@ public class DetalleAlarmas extends AppCompatActivity implements OnMapReadyCallb
         showToolbar("Detalle Alarmas" , true);
         context=this;
 
+        pref=new Preferences(getApplicationContext());
         edt_des = findViewById(R.id.edt_des);
         btn_registro = findViewById(R.id.btn_registrar);
         btn_camara = findViewById(R.id.btn_Camara);
@@ -131,8 +133,6 @@ public class DetalleAlarmas extends AppCompatActivity implements OnMapReadyCallb
         laFoto=findViewById(R.id.laFoto);
         checkFoto = findViewById(R.id.checkFoto);
         direc=findViewById(R.id.dire);
-        distritoid=distrito;
-        usuActual=usuarioid;
 
         //Recibimos el valor de la Actividad DetallesTips para mostrar o no el tipo de delito
         if (valor.equals("ACCIDENTE")) {
@@ -383,8 +383,8 @@ public class DetalleAlarmas extends AppCompatActivity implements OnMapReadyCallb
                 tipoDelito = tipo_delito.getSelectedItem().toString();
 
 
-                params1.put("id_distrito", distritoid);
-                params1.put("id_usuario", usuActual);
+                params1.put("id_distrito", pref.getDistritoIdPref());
+                params1.put("id_usuario", pref.getIdUsuarioPref());
                 params1.put("tipo", valor);
                 params1.put("tipo_delito", tipoDelito);
                 params1.put("calle_nombre", direccion);
@@ -575,8 +575,8 @@ public class DetalleAlarmas extends AppCompatActivity implements OnMapReadyCallb
                     }
 
                     params1.put("imagen", imagen);
-                    params1.put("id_distrito", distritoid);
-                    params1.put("id_usuario", usuActual);
+                    params1.put("id_distrito", pref.getDistritoIdPref());
+                    params1.put("id_usuario", pref.getIdUsuarioPref());
                     params1.put("tipo", valor);
                     params1.put("tipo_delito",tipoDelito );
                     params1.put("calle_nombre",direccion );
@@ -697,7 +697,7 @@ public class DetalleAlarmas extends AppCompatActivity implements OnMapReadyCallb
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> parametros=new HashMap<>();
                 //String to = "egX-GaUDnsk:APA91bFJC_iJHfJ_2Zyf06Smpr2EVdlsNyy6KxvEi5KSYJBuzZV5hd0ATfPJ77zPV_akxIDZ5SfCswlng8TzEmxY38aX4a0I3a3RylA5vzsBN4LxhkHJVyABJfsCd3X4mINPH9Xua3cf";
-                parametros.put("id_distrito",distrito);
+                parametros.put("id_distrito",pref.getDistritoIdPref());
                 parametros.put("tipo",tipoN);
                 parametros.put("direccion",direcN);
                 //parametros.put("to",to);

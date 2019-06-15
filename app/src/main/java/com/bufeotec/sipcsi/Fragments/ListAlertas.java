@@ -27,6 +27,7 @@ import com.bufeotec.sipcsi.Activitys.MapaAlertas;
 import com.bufeotec.sipcsi.Adapter.AlertasAdapter;
 import com.bufeotec.sipcsi.Models.Alertas;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
 import com.bufeotec.sipcsi.WebServices.VolleySingleton;
 
@@ -35,17 +36,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.bufeotec.sipcsi.WebServices.DataConnection.IP;
-import static com.bufeotec.sipcsi.Principal.MainActivity.distrito;
-import static com.bufeotec.sipcsi.Principal.MainActivity.usuarioid;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ListAlertas.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ListAlertas#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class ListAlertas extends Fragment {
 
 
@@ -60,6 +52,7 @@ public class ListAlertas extends Fragment {
     String id_alerta,Alertalatitudes,Alertalongitudes,tipo,tipo_delito,des,direc,fec;
     AlertasAdapter alertadAdapter;
     Alertas alers;
+    Preferences pref;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -77,15 +70,7 @@ public class ListAlertas extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ListAlertas.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static ListAlertas newInstance(String param1, String param2) {
         ListAlertas fragment = new ListAlertas();
         Bundle args = new Bundle();
@@ -112,7 +97,7 @@ public class ListAlertas extends Fragment {
         activity = getActivity();
         context = getContext();
         getActivity().setTitle("Lista De ListAlertas");
-
+        pref= new Preferences(context);
 
         progressBar = view.findViewById(R.id.progressbar);
         rcv_alertas = view.findViewById(R.id.rcv_alertas);
@@ -120,8 +105,8 @@ public class ListAlertas extends Fragment {
         cdv_mensaje.setVisibility(View.INVISIBLE);
 
         alers= new Alertas();
-        alers.setDistrito_id(distrito);
-        alers.setUsuario_id(usuarioid);
+        alers.setDistrito_id(pref.getDistritoIdPref());
+        alers.setUsuario_id(pref.getIdUsuarioPref());
 
 
         dc = new DataConnection(getActivity(),"listarAlertas",alers,false);
@@ -154,16 +139,7 @@ public class ListAlertas extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
@@ -282,7 +258,7 @@ public class ListAlertas extends Fragment {
                 Map<String,String> parametros=new HashMap<>();
 
 
-                parametros.put("id_usuario", usuarioid);
+                parametros.put("id_usuario", pref.getIdUsuarioPref());
                 parametros.put("id_alerta", id_alerta);
                 return parametros;
             }

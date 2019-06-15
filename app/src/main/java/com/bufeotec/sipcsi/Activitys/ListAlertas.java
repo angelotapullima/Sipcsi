@@ -3,7 +3,6 @@ package com.bufeotec.sipcsi.Activitys;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.bufeotec.sipcsi.Adapter.AlertasAdapter;
 import com.bufeotec.sipcsi.Models.Alertas;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
 import com.bufeotec.sipcsi.WebServices.VolleySingleton;
 
@@ -47,7 +47,7 @@ public class ListAlertas extends AppCompatActivity {
     Alertas alers;
     StringRequest stringRequest;
     Context context;
-    SharedPreferences pref;
+    Preferences pref;
     String id;
 
     @Override
@@ -56,18 +56,17 @@ public class ListAlertas extends AppCompatActivity {
         setContentView(R.layout.activity_listalertas);
         context = this;
         showToolbar("Lista De Alertas",true);
-        pref = getSharedPreferences("User", Context.MODE_PRIVATE);
+        pref=new Preferences(getApplicationContext());
 
         progressBar = findViewById(R.id.progressbar);
         rcv_alertas_activity = findViewById(R.id.rcv_alertas_activity);
         cdv_mensaje = findViewById(R.id.cdv_mensaje);
         cdv_mensaje.setVisibility(View.INVISIBLE);
 
-        String distrito = getDistritoPref();
-        id = getIdPref();
+
         alers= new Alertas();
-        alers.setDistrito_id(distrito);
-        alers.setUsuario_id(id);
+        alers.setDistrito_id(pref.getDistritoIdPref());
+        alers.setUsuario_id(pref.getIdUsuarioPref());
 
 
         dc = new DataConnection(activity,"listarAlertas",alers,false);
@@ -211,10 +210,5 @@ public class ListAlertas extends AppCompatActivity {
         return false;
     }
 
-    private String getDistritoPref(){
-        return pref.getString("distrito_id","");
-    }
-    private String getIdPref(){
-        return pref.getString("idusuario","");
-    }
+
 }

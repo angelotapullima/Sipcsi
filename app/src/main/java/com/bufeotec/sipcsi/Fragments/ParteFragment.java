@@ -46,6 +46,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.bufeotec.sipcsi.Models.Accidentes;
 import com.bufeotec.sipcsi.Models.Vehiculos;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
 import com.bufeotec.sipcsi.WebServices.VolleySingleton;
 import com.google.android.gms.location.LocationServices;
@@ -67,17 +68,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import static com.bufeotec.sipcsi.WebServices.DataConnection.IP;
-import static com.bufeotec.sipcsi.Principal.MainActivity.distrito;
-import static com.bufeotec.sipcsi.Principal.MainActivity.usuarioid;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ParteFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ParteFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class ParteFragment extends Fragment implements View.OnClickListener,OnMapReadyCallback {
 
     private static final String CERO = "0";
@@ -96,13 +88,13 @@ public class ParteFragment extends Fragment implements View.OnClickListener,OnMa
     Spinner spn_causas,spn_vehiculo;
     Marker mPlus;
     Double corx,cory;
-    String data,date,hours;
-    int ano,mes,dia,hora,minuto;
+    String data;
     StringRequest stringRequest;
     public ArrayList<Accidentes> arrayArea;
     ArrayList<String> arrayarea;
     ArrayList<String> arrayIdv;
     public ArrayList<Vehiculos> arrayIdvehiculo;
+    Preferences pref;
 
     Double latApoyo = Double.valueOf(0);
     Double longApoyo = Double.valueOf(0);
@@ -157,7 +149,7 @@ public class ParteFragment extends Fragment implements View.OnClickListener,OnMa
         activity = getActivity();
         context = getContext();
         getActivity().setTitle("Registro de Parte");
-
+        pref=new Preferences(context);
         data = getArguments().getString("dato");
         titulo=view.findViewById(R.id.titulo);
         btnMapaApoyo=view.findViewById(R.id.btnMapaApoyo);
@@ -260,7 +252,7 @@ public class ParteFragment extends Fragment implements View.OnClickListener,OnMa
         dc2 = new DataConnection(activity,"listarCausas",false);
         new GetCausas().execute();
 
-        dc = new DataConnection(getActivity(),"listarVehiculos",usuarioid,false);
+        dc = new DataConnection(getActivity(),"listarVehiculos",pref.getIdUsuarioPref(),false);
         new GetVehiculosId().execute();
 
         return view;
@@ -454,7 +446,7 @@ public class ParteFragment extends Fragment implements View.OnClickListener,OnMa
 
     public void ShowHome (){
 
-        PuebloOpinaFragment po=new PuebloOpinaFragment();
+        FeedFragment po=new FeedFragment();
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.contenedor,po)
                 .addToBackStack("frag")
@@ -555,7 +547,7 @@ public class ParteFragment extends Fragment implements View.OnClickListener,OnMa
                 parametros.put("nombre3", nom3);
                 parametros.put("dni3", dni3);
                 parametros.put("edad3", edad3);
-                parametros.put("distrito", distrito);
+                parametros.put("distrito", pref.getDistritoIdPref());
                 return parametros;
             }
         };
@@ -636,7 +628,7 @@ public class ParteFragment extends Fragment implements View.OnClickListener,OnMa
                 parametros.put("dni3", dni3);
                 parametros.put("edad3", edad3);
                 parametros.put("tipo", Tips);
-                parametros.put("distrito", distrito);
+                parametros.put("distrito", pref.getDistritoIdPref());
 
                 return parametros;
             }
@@ -715,7 +707,7 @@ public class ParteFragment extends Fragment implements View.OnClickListener,OnMa
                 parametros.put("dni3", dni3);
                 parametros.put("edad3", edad3);
                 parametros.put("causa", "1");
-                parametros.put("distrito", distrito);
+                parametros.put("distrito", pref.getDistritoIdPref());
                 parametros.put("fatal", "si");
 
                 return parametros;

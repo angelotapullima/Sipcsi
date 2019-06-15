@@ -17,12 +17,12 @@ import android.widget.TextView;
 import com.bufeotec.sipcsi.Activitys.Login;
 import com.bufeotec.sipcsi.Models.Usuario;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
 
 import java.util.ArrayList;
 
 import static com.bufeotec.sipcsi.Principal.MainActivity.removerLogin;
-import static com.bufeotec.sipcsi.Principal.MainActivity.usuarioid;
 
 
 public class InformacionFragment extends Fragment implements View.OnClickListener {
@@ -33,6 +33,7 @@ public class InformacionFragment extends Fragment implements View.OnClickListene
     String distrito;
     DataConnection dc;
     ArrayList<Usuario> arrayPerfil;
+    Preferences pref;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -73,7 +74,7 @@ public class InformacionFragment extends Fragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.fragment_informacion, container, false);
         activity=getActivity();
         context= getContext();
-
+        pref= new Preferences(context);
         Pdni = view.findViewById(R.id.Pdni);
         Prol = view.findViewById(R.id.Prol);
         Pdistrito = view.findViewById(R.id.Pdistrito);
@@ -83,7 +84,7 @@ public class InformacionFragment extends Fragment implements View.OnClickListene
         Peditar = view.findViewById(R.id.Peditar);
 
 
-        dc = new DataConnection(getActivity(),"listarPerfil",usuarioid,false);
+        dc = new DataConnection(getActivity(),"listarPerfil",pref.getIdUsuarioPref(),false);
         new InformacionFragment.Getperfilinfo().execute();
 
 

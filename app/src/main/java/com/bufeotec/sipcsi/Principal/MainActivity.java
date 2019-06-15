@@ -27,21 +27,18 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -77,7 +74,6 @@ import com.bufeotec.sipcsi.Fragments.ParteFragment;
 import com.bufeotec.sipcsi.Fragments.PerfilFragment;
 import com.bufeotec.sipcsi.Fragments.PrimerosAuxiliosFragment;
 import com.bufeotec.sipcsi.Fragments.PublicacionesFragment;
-import com.bufeotec.sipcsi.Fragments.PuebloOpinaFragment;
 import com.bufeotec.sipcsi.Fragments.PuntosTuristicosFragment;
 import com.bufeotec.sipcsi.Fragments.SeguimientoATodos;
 import com.bufeotec.sipcsi.Fragments.TrackingBasureroFragment;
@@ -110,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         ListParteAccidenteFragment.OnFragmentInteractionListener,
         ListParteDelitoFragment.OnFragmentInteractionListener,
         ListParteApoyoFragment.OnFragmentInteractionListener,
-        PuebloOpinaFragment.OnFragmentInteractionListener,
         PuntosTuristicosFragment.OnFragmentInteractionListener,
         TrackingBasureroFragment.OnFragmentInteractionListener, View.OnClickListener,
         PublicacionesFragment.OnFragmentInteractionListener,
@@ -128,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     Fragment fragment = null;
     //Inicializaos las Variables
     public static String rol_id,nombreuser,vehiculoid;
-    public static String usuarioid, distrito;
+    public String usuarioid, distrito;
     static  String  token = "";
     Toolbar toolbar;
     static String tokenNuevo = "";
@@ -396,7 +391,17 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+
+        if (id == R.id.pueblo) {
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragment= new FeedFragment();
+            fragmentTransaction.replace(R.id.contenedor, fragment).addToBackStack("frag").commit();
+
+
+
+            // Handle the camera action
+        } else if (id == R.id.mapa_incidencias) {
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
             fragment= new MapsFragment();
@@ -405,14 +410,14 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
 
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.seguimiento_todos) {
 
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
             fragment= new SeguimientoATodos();
             fragmentTransaction.replace(R.id.contenedor, fragment).addToBackStack("frag").commit();
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.list_unidad) {
 
 
             fragmentManager = getSupportFragmentManager();
@@ -421,7 +426,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             fragmentTransaction.replace(R.id.contenedor, fragment).addToBackStack("frag").commit();
 
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.list_alertas) {
 
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
@@ -443,28 +448,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             fragment = new ListMisAlertas();
             fragmentTransaction.replace(R.id.contenedor, fragment).addToBackStack("frag").commit();
 
-
-        }
-        else if (id == R.id.perfil) {
-
-            fragmentManager = getSupportFragmentManager();
-            fragmentTransaction = fragmentManager.beginTransaction();
-            fragment = new PerfilFragment();
-            fragmentTransaction.replace(R.id.contenedor, fragment).addToBackStack("frag").commit();
-
-        }else if (id == R.id.Nemergencias) {
-
-            fragmentManager = getSupportFragmentManager();
-            fragmentTransaction = fragmentManager.beginTransaction();
-            fragment = new NumerosEmergenciaFragment();
-            fragmentTransaction.replace(R.id.contenedor, fragment).addToBackStack("frag").commit();
-
-        }else if (id == R.id.Pauxilios) {
-
-            fragmentManager = getSupportFragmentManager();
-            fragmentTransaction = fragmentManager.beginTransaction();
-            fragment = new PrimerosAuxiliosFragment();
-            fragmentTransaction.replace(R.id.contenedor, fragment).addToBackStack("frag").commit();
 
         }
         else if (id == R.id.parte) {
@@ -497,36 +480,54 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             fragment.setArguments(data);*/
 
 
-        }
-        else if (id == R.id.Basurero) {
+        }else if (id == R.id.Basurero) {
 
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
             fragment= new MonitoreoBasureroFragment();
             fragmentTransaction.replace(R.id.contenedor, fragment).addToBackStack("frag").commit();
 
-        }else if (id == R.id.puntoT) {
-
-            fragmentManager = getSupportFragmentManager();
-            fragmentTransaction = fragmentManager.beginTransaction();
-            fragment = new PuntosTuristicosFragment();
-            fragmentTransaction.replace(R.id.contenedor, fragment).addToBackStack("frag").commit();
-
-        }else if (id == R.id.pueblo) {
-
-            fragmentManager = getSupportFragmentManager();
-            fragmentTransaction = fragmentManager.beginTransaction();
-            fragment = new PuebloOpinaFragment();
-            fragmentTransaction.replace(R.id.contenedor, fragment).addToBackStack("frag").commit();
-
-        }else if (id == R.id.tracking) {
+        }
+        else if (id == R.id.tracking) {
 
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
             fragment = new TrackingBasureroFragment();
             fragmentTransaction.replace(R.id.contenedor, fragment).addToBackStack("frag").commit();
 
-        }else if (id == R.id.tips) {
+        }
+        else if (id == R.id.puntoT) {
+
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragment = new PuntosTuristicosFragment();
+            fragmentTransaction.replace(R.id.contenedor, fragment).addToBackStack("frag").commit();
+
+        }
+        else if (id == R.id.perfil) {
+
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragment = new PerfilFragment();
+            fragmentTransaction.replace(R.id.contenedor, fragment).addToBackStack("frag").commit();
+
+        }else if (id == R.id.Nemergencias) {
+
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragment = new NumerosEmergenciaFragment();
+            fragmentTransaction.replace(R.id.contenedor, fragment).addToBackStack("frag").commit();
+
+        }else if (id == R.id.Pauxilios) {
+
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragment = new PrimerosAuxiliosFragment();
+            fragmentTransaction.replace(R.id.contenedor, fragment).addToBackStack("frag").commit();
+
+        }
+
+        else if (id == R.id.tips) {
 
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();

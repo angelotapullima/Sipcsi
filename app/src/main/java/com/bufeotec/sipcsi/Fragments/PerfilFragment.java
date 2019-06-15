@@ -16,11 +16,10 @@ import android.widget.TextView;
 
 import com.bufeotec.sipcsi.Models.Usuario;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
 
 import java.util.ArrayList;
-
-import static com.bufeotec.sipcsi.Principal.MainActivity.nombreuser;
 
 
 public class PerfilFragment extends Fragment implements View.OnClickListener {
@@ -56,6 +55,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
     DataConnection dc;
     static ArrayList<Usuario> listPerfil;
     TextView nombreP ,distritoP,rolP;
+    Preferences pref;
 
 
     private static final String ARG_PARAM1 = "param1";
@@ -97,6 +97,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_perfil, container, false);
         activity = getActivity();
         context = getContext();
+        pref=new Preferences(context);
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 
         mViewPager = view.findViewById(R.id.contenedor);
@@ -136,7 +137,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
         nombreP=view.findViewById(R.id.nombrePerfil);
         distritoP=view.findViewById(R.id.distritoPerfil);
 
-        nombreP.setText(nombreuser);
+        nombreP.setText(pref.getNombrePref());
 
         //closeP.setOnClickListener(this);
 

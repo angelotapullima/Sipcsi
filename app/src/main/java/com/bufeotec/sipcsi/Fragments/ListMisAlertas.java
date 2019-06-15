@@ -20,20 +20,11 @@ import com.bufeotec.sipcsi.Adapter.AdapterMisAlertas.AdapterMiListaAlertas;
 import com.bufeotec.sipcsi.Adapter.AdapterMisAlertas.AdapterMiListaAlertasPendientes;
 import com.bufeotec.sipcsi.Models.Alertas;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
 
 import java.util.ArrayList;
 
-import static com.bufeotec.sipcsi.Principal.MainActivity.usuarioid;
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ListMisAlertas.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ListMisAlertas#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ListMisAlertas extends Fragment {
 
     Activity activity;
@@ -48,6 +39,7 @@ public class ListMisAlertas extends Fragment {
     String malid_alerta, malAlertalatitudes,malAlertalongitudes,maltipo,maltipo_delito,maldes,maldirec,malfec;
     ArrayList<Alertas> Arraypendientes  = new ArrayList<>();
     ArrayList<Alertas> Arrayatendidos= new ArrayList<>();
+    Preferences pref;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -98,6 +90,7 @@ public class ListMisAlertas extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list_mis_alertas, container, false);
         activity = getActivity();
         context = getContext();
+        pref= new Preferences(context);
         getActivity().setTitle("Mis ListAlertas");
         progressBar = view.findViewById(R.id.progressbar);
         cdv_mensaje = view.findViewById(R.id.cdv_mensaje);
@@ -105,7 +98,7 @@ public class ListMisAlertas extends Fragment {
         rcv_misalertashechas_pendientes=view.findViewById(R.id.rcv_misalertashechas_pendientes);
         rcv_misalertashechas_atendidas=view.findViewById(R.id.rcv_misalertashechas_atendidas);
 
-        dc = new DataConnection(getActivity(),"listarAlertasHechas",usuarioid,false);
+        dc = new DataConnection(getActivity(),"listarAlertasHechas",pref.getIdUsuarioPref(),false);
         new ListMisAlertas.GetMisAlertasHechas().execute();
         return view;
     }

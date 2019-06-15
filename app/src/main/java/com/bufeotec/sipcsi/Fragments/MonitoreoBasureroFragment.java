@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import com.android.volley.toolbox.StringRequest;
 import com.bufeotec.sipcsi.Models.Vehiculos;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -34,12 +35,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
-import static com.bufeotec.sipcsi.Principal.MainActivity.distrito;
-
 
 public class MonitoreoBasureroFragment extends Fragment implements OnMapReadyCallback {
 
-    StringRequest stringRequest;
     Activity activity;
     Context context;
     static DataConnection dc;
@@ -48,6 +46,7 @@ public class MonitoreoBasureroFragment extends Fragment implements OnMapReadyCal
     static Marker marcador_;
     static boolean valor = false;
     public static ArrayList<Vehiculos> listaBasureros;
+    Preferences pref;
 
 
     private static final String ARG_PARAM1 = "param1";
@@ -108,6 +107,7 @@ public class MonitoreoBasureroFragment extends Fragment implements OnMapReadyCal
         View view = inflater.inflate(R.layout.fragment_monitoreo_basurero, container, false);
         activity = getActivity();
         context = getContext();
+        pref=new Preferences(context);
         ejecutarCadaTiempo();
         getActivity().setTitle("Monitoreo Basurero");
         return  view;
@@ -151,7 +151,7 @@ public class MonitoreoBasureroFragment extends Fragment implements OnMapReadyCal
 
 
 
-        dc = new DataConnection(getActivity(),"listarBasureros",distrito,false);
+        dc = new DataConnection(getActivity(),"listarBasureros",pref.getDistritoIdPref(),false);
         new MonitoreoBasureroFragment.GetBasureros().execute();
 
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -252,7 +252,7 @@ public class MonitoreoBasureroFragment extends Fragment implements OnMapReadyCal
             public void run() {
                 if (!run) {
                     Log.i("funciones", "Basurero");
-                    dc = new DataConnection(getActivity(), "listarBasureros", distrito, false);
+                    dc = new DataConnection(getActivity(), "listarBasureros", pref.getDistritoIdPref(), false);
                     new MonitoreoBasureroFragment.GetBasureros().execute();
 
                 }else{

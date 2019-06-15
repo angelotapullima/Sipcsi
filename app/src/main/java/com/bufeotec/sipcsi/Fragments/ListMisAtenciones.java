@@ -20,11 +20,10 @@ import com.bufeotec.sipcsi.Adapter.AdapterMisAtenciones.AdapterMisAtenciones;
 import com.bufeotec.sipcsi.Adapter.AdapterMisAtenciones.AdapterMisAtencionesPendientes;
 import com.bufeotec.sipcsi.Models.Alertas;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
 
 import java.util.ArrayList;
-
-import static com.bufeotec.sipcsi.Principal.MainActivity.usuarioid;
 
 
 public class ListMisAtenciones extends Fragment {
@@ -36,7 +35,7 @@ public class ListMisAtenciones extends Fragment {
     CardView cdv_mensaje;
     ProgressBar progressBar;
     ArrayList<Alertas> listAtenciones;
-
+    Preferences pref;
     ArrayList<Alertas> Atencionespendientes  = new ArrayList<>();
     ArrayList<Alertas> Atencionesatendidas= new ArrayList<>();
     AdapterMisAtenciones adapterMisAtenciones;
@@ -87,6 +86,7 @@ public class ListMisAtenciones extends Fragment {
         View view = inflater.inflate(R.layout.fragment_mis_atenciones, container, false);
         activity = getActivity();
         context = getContext();
+        pref=new Preferences(context);
         getActivity().setTitle("Mis Atenciones");
         progressBar = view.findViewById(R.id.progressbar);
         cdv_mensaje = view.findViewById(R.id.cdv_mensaje);
@@ -94,7 +94,7 @@ public class ListMisAtenciones extends Fragment {
         rcv_misAtenciones=view.findViewById(R.id.rcv_misatenciones);
         rcv_misAtenciones_pendientes=view.findViewById(R.id.rcv_misAtenciones_pendientes);
 
-        dc = new DataConnection(getActivity(),"listarAtenciones",usuarioid,false);
+        dc = new DataConnection(getActivity(),"listarAtenciones",pref.getIdUsuarioPref(),false);
         new ListMisAtenciones.GetMisatenciones().execute();
 
         return view;

@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bufeotec.sipcsi.Models.Queja;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.Util.UniversalImageLoader;
 import com.bufeotec.sipcsi.WebServices.VolleySingleton;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -34,7 +35,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.bufeotec.sipcsi.WebServices.DataConnection.IP;
-import static com.bufeotec.sipcsi.Principal.MainActivity.usuarioid;
 
 public class AdaptadorMisPublicaciones extends RecyclerView.Adapter<AdaptadorMisPublicaciones.QuejaViewHolder> {
 
@@ -43,7 +43,7 @@ public class AdaptadorMisPublicaciones extends RecyclerView.Adapter<AdaptadorMis
     Context context;
     Queja obj;
     UniversalImageLoader universalImageLoader;
-    SharedPreferences preferencesUser;
+    Preferences preferencesUser;
     StringRequest stringRequest;
     private OnItemClickListener listener;
     String foto ;
@@ -63,7 +63,7 @@ public class AdaptadorMisPublicaciones extends RecyclerView.Adapter<AdaptadorMis
         this.context = context;
         this.listener = listener;
         universalImageLoader = new UniversalImageLoader(context);
-        preferencesUser = context.getSharedPreferences("User", Context.MODE_PRIVATE);
+        preferencesUser = new Preferences(context);
     }
 
     public class QuejaViewHolder extends RecyclerView.ViewHolder{
@@ -221,7 +221,7 @@ public class AdaptadorMisPublicaciones extends RecyclerView.Adapter<AdaptadorMis
 
 
                 Map<String,String> parametros=new HashMap<>();
-                parametros.put("usuario_id",usuarioid);
+                parametros.put("usuario_id",preferencesUser.getIdUsuarioPref());
                 parametros.put("pueblo_id",idlike);
 
                 return parametros;
@@ -277,7 +277,7 @@ public class AdaptadorMisPublicaciones extends RecyclerView.Adapter<AdaptadorMis
 
 
                 Map<String,String> parametros=new HashMap<>();
-                parametros.put("usuario_id",usuarioid);
+                parametros.put("usuario_id",preferencesUser.getIdUsuarioPref());
                 parametros.put("pueblo_id",iddislike);
 
                 return parametros;

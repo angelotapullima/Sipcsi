@@ -20,12 +20,10 @@ import android.widget.ProgressBar;
 import com.bufeotec.sipcsi.Adapter.AdapterListParteDelito;
 import com.bufeotec.sipcsi.Models.Delito;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
 
 import java.util.ArrayList;
-
-import static com.bufeotec.sipcsi.Principal.MainActivity.distrito;
-import static com.bufeotec.sipcsi.Principal.MainActivity.usuarioid;
 
 
 public class ListParteDelitoFragment extends Fragment implements View.OnClickListener {
@@ -33,7 +31,6 @@ public class ListParteDelitoFragment extends Fragment implements View.OnClickLis
 
     Activity activity;
     Context context;
-    Delito delito;
     DataConnection dc;
     CardView cdv_mensaje;
     ProgressBar progressBar;
@@ -42,6 +39,7 @@ public class ListParteDelitoFragment extends Fragment implements View.OnClickLis
     RecyclerView rcv_listdelito;
     Button btnAddDeli;
     Fragment fragment = null;
+    Preferences pref;
 
 
 
@@ -92,6 +90,7 @@ public class ListParteDelitoFragment extends Fragment implements View.OnClickLis
         View view =  inflater.inflate(R.layout.fragment_list_parte_delito, container, false);
         activity = getActivity();
         context = getContext();
+        pref=new Preferences(context);
         getActivity().setTitle("Lista Partes Delito");
         rcv_listdelito=view.findViewById(R.id.rcv_listdelito);
         progressBar = view.findViewById(R.id.progressbar);
@@ -102,11 +101,7 @@ public class ListParteDelitoFragment extends Fragment implements View.OnClickLis
         btnAddDeli.setOnClickListener(this);
 
 
-        delito = new Delito();
-        delito.setUsuario_id(usuarioid);
-        delito.setDistrito(distrito);
-
-        dc = new DataConnection(getActivity(),"listarDelitos",usuarioid,false);
+        dc = new DataConnection(getActivity(),"listarDelitos",pref.getIdUsuarioPref(),false);
         new ListParteDelitoFragment.GetListDelitos().execute();
         return view;
     }

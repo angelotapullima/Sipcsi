@@ -17,11 +17,10 @@ import android.widget.ProgressBar;
 import com.bufeotec.sipcsi.Adapter.AdaptadorMisPublicaciones;
 import com.bufeotec.sipcsi.Models.Queja;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
 
 import java.util.ArrayList;
-
-import static com.bufeotec.sipcsi.Principal.MainActivity.usuarioid;
 
 
 public class PublicacionesFragment extends Fragment {
@@ -33,7 +32,7 @@ public class PublicacionesFragment extends Fragment {
     ProgressBar progressBar;
     CardView cdv_mensaje;
     AdaptadorMisPublicaciones adaptadorMisPublicaciones;
-
+    Preferences pref;
     public ArrayList<Queja> arraypublicaciones;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -84,11 +83,12 @@ public class PublicacionesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_publicaciones, container, false);
         activity=getActivity();
         context=getContext();
+        pref=new Preferences(context);
         rcv_misPublicaciones=view.findViewById(R.id.rcv_misPublicaciones);
         progressBar = view.findViewById(R.id.progressbar);
         cdv_mensaje = view.findViewById(R.id.cdv_mensaje);
 
-        dc = new DataConnection(activity,"listarMisPublicaciones",usuarioid,false);
+        dc = new DataConnection(activity,"listarMisPublicaciones",pref.getIdUsuarioPref(),false);
         new PublicacionesFragment.GetPublicaciones().execute();
         return  view;
     }

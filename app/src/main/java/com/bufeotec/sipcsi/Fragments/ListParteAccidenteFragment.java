@@ -20,19 +20,15 @@ import android.widget.ProgressBar;
 import com.bufeotec.sipcsi.Adapter.AdapterListParteAccidente;
 import com.bufeotec.sipcsi.Models.Accidentes;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
 
 import java.util.ArrayList;
-
-import static com.bufeotec.sipcsi.Principal.MainActivity.distrito;
-import static com.bufeotec.sipcsi.Principal.MainActivity.usuarioid;
-
 
 public class ListParteAccidenteFragment extends Fragment implements View.OnClickListener {
 
     Activity activity;
     Context context;
-    Accidentes accidentes;
     DataConnection dc;
     CardView cdv_mensaje;
     ProgressBar progressBar;
@@ -41,6 +37,7 @@ public class ListParteAccidenteFragment extends Fragment implements View.OnClick
     RecyclerView rcv_listaccidente;
     Button btnAddAcci;
     Fragment fragment = null;
+    Preferences pref;
 
 
 
@@ -92,6 +89,7 @@ public class ListParteAccidenteFragment extends Fragment implements View.OnClick
 
         activity = getActivity();
         context = getContext();
+        pref=new Preferences(context);
         getActivity().setTitle("Lista Partes Accidentes");
         rcv_listaccidente=view.findViewById(R.id.rcv_listaccidente);
         progressBar = view.findViewById(R.id.progressbar);
@@ -99,12 +97,10 @@ public class ListParteAccidenteFragment extends Fragment implements View.OnClick
         btnAddAcci=view.findViewById(R.id.btnAddAcci);
         cdv_mensaje.setVisibility(View.INVISIBLE);
 
-        accidentes = new Accidentes();
-        accidentes.setUsuario_id(usuarioid);
-        accidentes.setDistrito(distrito);
+
         btnAddAcci.setOnClickListener(this);
 
-        dc = new DataConnection(getActivity(),"listarAccidentes",usuarioid,false);
+        dc = new DataConnection(getActivity(),"listarAccidentes",pref.getIdUsuarioPref(),false);
         new ListParteAccidenteFragment.GetListAccidentes().execute();
 
         return  view;
@@ -208,7 +204,6 @@ public class ListParteAccidenteFragment extends Fragment implements View.OnClick
         adapterListParteAccidente = new AdapterListParteAccidente(activity, listAccidentes, R.layout.rcv_list_accidentes, new AdapterListParteAccidente.OnItemClickListener() {
             @Override
             public void onItemClick(Accidentes alertas, int position) {
-
 
 
                 String estado = "alertas";

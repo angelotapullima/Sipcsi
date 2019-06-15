@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import com.bufeotec.sipcsi.Principal.MainActivity;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.Preferences;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -18,14 +19,14 @@ public class Splash extends AppCompatActivity {
 
     public TimerTask task;
     private static final long TIEMPO_SPLASH_SCREEN = 4000;
-    SharedPreferences preferencesUser;
+    Preferences preferencesUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        preferencesUser = getSharedPreferences("User", Context.MODE_PRIVATE);
+        preferencesUser = new Preferences(getApplicationContext());
 
         loadingAndDisplayContent();
 
@@ -34,7 +35,7 @@ public class Splash extends AppCompatActivity {
             @Override
             public void run() {
                 //Obtnemos los datos del SharedPreferences, Si el usuario de logueo antes, nos manda directo al MenuPrincipal,caso contrario debe loguearse
-                if(!preferencesUser.getString("idusuario","").equals("") ){
+                if(!preferencesUser.getIdUsuarioPref().equals("") ){
                     Intent iprincipal = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(iprincipal);
                     finish();

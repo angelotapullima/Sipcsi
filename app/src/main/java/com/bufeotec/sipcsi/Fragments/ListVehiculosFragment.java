@@ -19,11 +19,10 @@ import com.bufeotec.sipcsi.Activitys.SeguimientoPorUnidad;
 import com.bufeotec.sipcsi.Adapter.ListVehiculosAdapter;
 import com.bufeotec.sipcsi.Models.Vehiculos;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
 
 import java.util.ArrayList;
-
-import static com.bufeotec.sipcsi.Principal.MainActivity.usuarioid;
 
 
 public class ListVehiculosFragment extends Fragment {
@@ -36,6 +35,7 @@ public class ListVehiculosFragment extends Fragment {
     CardView cdv_mensaje;
     ProgressBar progressBar;
     RecyclerView rcv_vehiculos;
+    Preferences pref;
 
     public ArrayList<Vehiculos> arrayvehiculos;
     // TODO: Rename parameter arguments, choose names that match
@@ -81,6 +81,7 @@ public class ListVehiculosFragment extends Fragment {
 
         activity = getActivity();
         context = getContext();
+        pref=new Preferences(context);
         getActivity().setTitle("Lista De Vehiculos");
         progressBar = view.findViewById(R.id.progressbar);
         rcv_vehiculos = view.findViewById(R.id.rcv_vehiculos);
@@ -88,7 +89,7 @@ public class ListVehiculosFragment extends Fragment {
         cdv_mensaje.setVisibility(View.INVISIBLE);
 
 
-        dc = new DataConnection(getActivity(),"listarVehiculos",usuarioid,false);
+        dc = new DataConnection(getActivity(),"listarVehiculos",pref.getIdUsuarioPref(),false);
         new GetVehiculos().execute();
 
         return view;

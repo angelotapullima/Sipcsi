@@ -26,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bufeotec.sipcsi.Models.Vehiculos;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
 import com.bufeotec.sipcsi.WebServices.VolleySingleton;
 import com.google.android.gms.maps.CameraUpdate;
@@ -44,7 +45,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.bufeotec.sipcsi.WebServices.DataConnection.IP;
-import static com.bufeotec.sipcsi.Principal.MainActivity.usuarioid;
 
 
 public class SeguimientoATodos extends Fragment implements OnMapReadyCallback {
@@ -60,7 +60,7 @@ public class SeguimientoATodos extends Fragment implements OnMapReadyCallback {
     static GoogleMap mMap;
     boolean run = false;
     static Marker marcador_;
-
+    static Preferences pref;
     static boolean valor = false;
     private static ArrayList<Vehiculos> listaUnidades ;
 
@@ -114,6 +114,7 @@ public class SeguimientoATodos extends Fragment implements OnMapReadyCallback {
 
         activity = getActivity();
         context = getContext();
+        pref=new Preferences(context);
         activity.setTitle("Seguimiento a Todos los vehiculos");
         ejecutarCadaTiempo();
 
@@ -165,7 +166,7 @@ public class SeguimientoATodos extends Fragment implements OnMapReadyCallback {
 
 
 
-        dc = new DataConnection(getActivity(),"listarVehiculos",usuarioid,false);
+        dc = new DataConnection(getActivity(),"listarVehiculos",pref.getIdUsuarioPref(),false);
         new SeguimientoATodos.GetPuntos().execute();
 
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -280,7 +281,7 @@ public class SeguimientoATodos extends Fragment implements OnMapReadyCallback {
             public void run() {
                 if (!run) {
                     Log.i("funciones", "fun todos");
-                    dc = new DataConnection(getActivity(), "listarVehiculos", usuarioid, false);
+                    dc = new DataConnection(getActivity(), "listarVehiculos", pref.getIdUsuarioPref(), false);
                     new SeguimientoATodos.GetPuntos().execute();
 
                 }else{
@@ -318,7 +319,7 @@ public class SeguimientoATodos extends Fragment implements OnMapReadyCallback {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> parametros=new HashMap<>();
-                parametros.put("id",usuarioid);
+                parametros.put("id",pref.getIdUsuarioPref());
 
                 return parametros;
             }

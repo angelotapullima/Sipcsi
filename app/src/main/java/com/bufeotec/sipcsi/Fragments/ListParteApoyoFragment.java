@@ -20,12 +20,10 @@ import android.widget.ProgressBar;
 import com.bufeotec.sipcsi.Adapter.AdapterListParteApoyo;
 import com.bufeotec.sipcsi.Models.Apoyo;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
 
 import java.util.ArrayList;
-
-import static com.bufeotec.sipcsi.Principal.MainActivity.distrito;
-import static com.bufeotec.sipcsi.Principal.MainActivity.usuarioid;
 
 
 public class ListParteApoyoFragment extends Fragment implements View.OnClickListener {
@@ -42,6 +40,7 @@ public class ListParteApoyoFragment extends Fragment implements View.OnClickList
     RecyclerView rcv_listapoyo;
     Button btnAddApoy;
     Fragment fragment = null;
+    Preferences pref;
 
 
 
@@ -95,6 +94,7 @@ public class ListParteApoyoFragment extends Fragment implements View.OnClickList
 
         activity = getActivity();
         context = getContext();
+        pref= new Preferences(context);
         getActivity().setTitle("Lista Partes Apoyo");
         rcv_listapoyo=view.findViewById(R.id.rcv_listapoyo);
         progressBar = view.findViewById(R.id.progressbar);
@@ -104,11 +104,9 @@ public class ListParteApoyoFragment extends Fragment implements View.OnClickList
 
 
         btnAddApoy.setOnClickListener(this);
-        apoyo = new Apoyo();
-        apoyo.setUsuario_id(usuarioid);
-        apoyo.setDistrito(distrito);
 
-        dc = new DataConnection(getActivity(),"listarApoyo",usuarioid,false);
+
+        dc = new DataConnection(getActivity(),"listarApoyo",pref.getIdUsuarioPref(),false);
         new ListParteApoyoFragment.GetListApoyo().execute();
         return view;
     }

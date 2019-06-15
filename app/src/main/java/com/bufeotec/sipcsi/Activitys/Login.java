@@ -3,7 +3,6 @@ package com.bufeotec.sipcsi.Activitys;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -34,7 +33,6 @@ public class Login extends AppCompatActivity {
     FrameLayout frameGif;
     ImageView gif;
     AutoCompleteTextView act_usuario;
-    SharedPreferences sharedPreferences;
     String dirImagen ="http://www.guabba.com/accidentestransito/media/loader.gif";
 
     @Override
@@ -47,9 +45,6 @@ public class Login extends AppCompatActivity {
         txt_resgistrate = findViewById(R.id.txt_resgistrate);
         frameGif=findViewById(R.id.FrameGif);
         gif=findViewById(R.id.gif);
-
-
-        sharedPreferences = getSharedPreferences("User", Context.MODE_PRIVATE);
 
 
 
@@ -107,7 +102,7 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    public void entrar(){
+    /*public void entrar(){
 
         if(!sharedPreferences.getString("idusuario","").equals("") ){
             Intent iprincipal = new Intent(getApplicationContext(), MainActivity.class);
@@ -115,7 +110,7 @@ public class Login extends AppCompatActivity {
             finish();
         }
 
-        /*
+
         String usu = getUserPref();
         String pas = getClavePref();
 
@@ -137,8 +132,8 @@ public class Login extends AppCompatActivity {
             //frameGif.setVisibility(View.GONE);
 
 
-        }*/
-    }
+        }
+    }*/
 
     private boolean isGif(String imagen) {
         String extension = "";

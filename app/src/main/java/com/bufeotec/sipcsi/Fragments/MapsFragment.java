@@ -60,7 +60,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import static com.bufeotec.sipcsi.Services.FireBaseMessaging.TAG;
-import static com.bufeotec.sipcsi.WebServices.DataConnection.IP;
 
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener  {

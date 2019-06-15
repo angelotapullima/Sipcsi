@@ -10,19 +10,19 @@
             android:title="Pueblo Opina" />
 
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/mapa_incidencias"
             android:icon="@drawable/mapa_incidencias"
             android:title="Mapa de incidencias" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/seguimiento_todos"
             android:icon="@drawable/seguimiento_todos"
             android:title="Seguimiento a todos" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/list_unidad"
             android:icon="@drawable/seguimiento_unidad"
             android:title="Seguimiento por Unidad" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/list_alertas"
             android:icon="@drawable/lista_alertas"
             android:title="Lista de Alertas" />
         <item
