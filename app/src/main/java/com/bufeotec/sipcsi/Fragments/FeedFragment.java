@@ -2,19 +2,23 @@ package com.bufeotec.sipcsi.Fragments;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -41,6 +45,7 @@ import android.widget.Toast;
 import com.bufeotec.sipcsi.Adapter.AdaptadorListadoQuejas;
 import com.bufeotec.sipcsi.Models.Areas;
 import com.bufeotec.sipcsi.Models.Queja;
+import com.bufeotec.sipcsi.Principal.MainActivity;
 import com.bufeotec.sipcsi.R;
 import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
@@ -49,6 +54,9 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.UploadNotificationConfig;
+
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -56,11 +64,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import cz.msebera.android.httpclient.Header;
 
 import static android.app.Activity.RESULT_OK;
 import static com.bufeotec.sipcsi.WebServices.DataConnection.IP;
+import static net.gotev.uploadservice.Placeholders.ELAPSED_TIME;
+import static net.gotev.uploadservice.Placeholders.PROGRESS;
+import static net.gotev.uploadservice.Placeholders.TOTAL_FILES;
+import static net.gotev.uploadservice.Placeholders.UPLOADED_FILES;
+import static net.gotev.uploadservice.Placeholders.UPLOAD_RATE;
 
 
 public class FeedFragment extends Fragment implements View.OnClickListener , SwipeRefreshLayout.OnRefreshListener {
@@ -92,6 +106,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener , Swi
     public Uri output, resultUriRecortada;
     String userChoosenTask;
 
+    String url = "http://" + IP + "/index.php?c=Pueblo&a=guardar&key_mobile=123456asdfgh";
 
     public FeedFragment() {
         // Required empty public constructor
@@ -301,11 +316,13 @@ public class FeedFragment extends Fragment implements View.OnClickListener , Swi
                 if (!(spn_areas.getSelectedItem().toString().equals("Seleccione"))) {
                     if (fotocaptada.getDrawable() == null) {
                         valorFoto = false;
+                        publicar(valorFoto);
                     } else {
                         valorFoto = true;
+                        uploadMultipart();
                     }
-
-                    publicar(valorFoto);
+                    //uploadMultipart();
+                    //publicar(valorFoto);
                     dialog.dismiss();
                 } else {
                     Toast.makeText(context, "Por favor, seleccione el área", Toast.LENGTH_LONG).show();
@@ -325,6 +342,84 @@ public class FeedFragment extends Fragment implements View.OnClickListener , Swi
     }
 
 
+
+    public void uploadMultipart() {
+        //getting name for the image
+
+
+
+        String path = resultUriRecortada.getPath();
+
+        //getting the actual path of the image
+
+
+        //Uploading code
+        try {
+            String uploadId = UUID.randomUUID().toString();
+
+            PendingIntent clickIntent = PendingIntent.getActivity(
+                    context, 1, new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+            //Creating a multi part request
+            new MultipartUploadRequest(context, uploadId, url)
+                    .addFileToUpload(path, "imagen") //Adding file
+                    .addParameter("usuario_id", pref.getIdUsuarioPref()) //Adding text parameter to the request
+                    .addParameter("distrito_id", pref.getDistritoIdPref()) //Adding text parameter to the request
+                    .addParameter("destino", arrayArea.get(spn_areas.getSelectedItemPosition() - 1).getArea_nombre()) //Adding text parameter to the request
+                    .addParameter("queja", et_post.getText().toString()) //Adding text parameter to the request
+                    .setNotificationConfig(getNotificationConfig().setTitleForAllStatuses("Cargando Imagen")
+                            .setRingToneEnabled(false)
+                            .setClickIntentForAllStatuses(clickIntent)
+                            .setClearOnActionForAllStatuses(true))
+                            /*.setTitleForAllStatuses("Cargando Imagen")
+                            .setIconForAllStatuses(R.drawable.posible)
+                            .setIconColorForAllStatuses(Color.BLUE)
+                            .setClearOnActionForAllStatuses(true)
+                            .setClickIntentForAllStatuses(clickIntent)
+
+                            .setRingToneEnabled(false))*/
+                    .setMaxRetries(2)
+                    .startUpload(); //Starting the upload
+
+        } catch (Exception exc) {
+            Toast.makeText(context, exc.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    protected UploadNotificationConfig getNotificationConfig() {
+        UploadNotificationConfig config = new UploadNotificationConfig();
+
+
+         /*PendingIntent clickIntent = PendingIntent.getActivity(
+                context, 1, new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
+       config.setTitleForAllStatuses(getString(title))
+                .setRingToneEnabled(false)
+                .setClickIntentForAllStatuses(clickIntent)
+                .setClearOnActionForAllStatuses(true);*/
+
+
+
+        config.getProgress().message = "Subiendo " + UPLOADED_FILES + " de " + TOTAL_FILES
+                + " a " + UPLOAD_RATE + " - " + PROGRESS;
+        config.getProgress().iconResourceID = R.drawable.posible;
+        config.getProgress().iconColorResourceID = Color.BLUE;
+
+        config.getCompleted().message = "Subida completada exitosamente en " + ELAPSED_TIME;
+        config.getCompleted().iconResourceID = R.drawable.posible;
+        config.getCompleted().iconColorResourceID = Color.GREEN;
+
+        config.getError().message = "Error al Cargar Imagen";
+        config.getError().iconResourceID = R.drawable.posible;
+        config.getError().iconColorResourceID = Color.RED;
+
+        config.getCancelled().message = "\n" +
+                "La carga ha sido cancelada";
+        config.getCancelled().iconResourceID = R.drawable.posible;
+        config.getCancelled().iconColorResourceID = Color.YELLOW;
+
+        return config;
+    }
     public void publicar(boolean val) {
 
         RequestParams params1 = new RequestParams();
@@ -347,7 +442,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener , Swi
 
         AsyncHttpClient client = new AsyncHttpClient();
         client.setTimeout(70000);
-        client.post("http://" + IP + "/index.php?c=Pueblo&a=guardar&key_mobile=123456asdfgh", params1, new AsyncHttpResponseHandler() {
+        client.post(url, params1, new AsyncHttpResponseHandler() {
 
             String respuesta = null;
             ProgressDialog loading;

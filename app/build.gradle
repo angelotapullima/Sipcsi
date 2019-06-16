@@ -59,5 +59,6 @@ dependencies {
     //Check for v11.4.2 or higher
     implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    implementation "net.gotev:uploadservice:3.4"
 }
 apply plugin: 'com.google.gms.google-services'

@@ -2,6 +2,7 @@ package com.bufeotec.sipcsi.Activitys;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -19,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -43,6 +45,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.bufeotec.sipcsi.Principal.MainActivity;
 import com.bufeotec.sipcsi.R;
 import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.WebServices.VolleySingleton;
@@ -60,6 +63,12 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.ServerResponse;
+import net.gotev.uploadservice.UploadInfo;
+import net.gotev.uploadservice.UploadNotificationConfig;
+import net.gotev.uploadservice.UploadStatusDelegate;
+
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -73,10 +82,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 import cz.msebera.android.httpclient.Header;
 
 import static com.bufeotec.sipcsi.WebServices.DataConnection.IP;
+import static net.gotev.uploadservice.Placeholders.ELAPSED_TIME;
+import static net.gotev.uploadservice.Placeholders.PROGRESS;
+import static net.gotev.uploadservice.Placeholders.TOTAL_FILES;
+import static net.gotev.uploadservice.Placeholders.UPLOADED_FILES;
+import static net.gotev.uploadservice.Placeholders.UPLOAD_RATE;
 
 public class DetalleAlarmas extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
 
@@ -207,11 +222,8 @@ public class DetalleAlarmas extends AppCompatActivity implements OnMapReadyCallb
 
         }
         if (v.equals(btn_registro)) {
-            if (checkFoto.isChecked()){
-                enviarConFoto();//new DetalleAlarmas.GetEnviar().execute();
-            }else{
+
                 enviar();
-            }
 
         }if (v.equals(btn_cancelar)) {
             finish();
@@ -422,6 +434,7 @@ public class DetalleAlarmas extends AppCompatActivity implements OnMapReadyCallb
 
                         if (statusCode == 200) {
                             //Toast.makeText(getApplicationContext(), "valo"+ responseBody.toString(), Toast.LENGTH_SHORT).show();
+
                             enviarAlertas(finalTipoNotificacion , direccion);
                             String est = "atendido";
                             try {
@@ -437,6 +450,9 @@ public class DetalleAlarmas extends AppCompatActivity implements OnMapReadyCallb
                                     alertas_id=jsonNodev.optString("id_alerta");
                                     Log.i("alertas", "alertas id: " + alertas_id);
 
+                                    if (checkFoto.isChecked()){
+                                        uploadMultipart(alertas_id);
+                                    }
                                     if (valorcodigo.equals("1") || !alertas_id.isEmpty()){
                                         //enviarAlertas();
                                         Intent i = new Intent(DetalleAlarmas.this, MapaAlertas.class);
@@ -542,6 +558,7 @@ public class DetalleAlarmas extends AppCompatActivity implements OnMapReadyCallb
     }
 
     String valorcodigo;
+    String urlGuardar = "https://\"+IP+\"/index.php?c=Alerta&a=guardar&key_mobile=123456asdfgh";
 
     public void enviarConFoto() {
 
@@ -708,6 +725,70 @@ public class DetalleAlarmas extends AppCompatActivity implements OnMapReadyCallb
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         VolleySingleton.getIntanciaVolley(context).addToRequestQueue(stringRequest);
+    }
+
+
+    public void uploadMultipart(String idAlertas) {
+        //getting name for the image
+
+
+
+        String path = resultUriRecortada.getPath();
+
+        //getting the actual path of the image
+
+
+        //Uploading code
+        try {
+            String uploadId = UUID.randomUUID().toString();
+
+            PendingIntent clickIntent = PendingIntent.getActivity(context, 1,
+                    new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+            //Creating a multi part request
+            new MultipartUploadRequest(context, uploadId, urlGuardar)
+                    .addFileToUpload(path, "imagen") //Adding file
+                    .addParameter("id_alerta", idAlertas) //Adding text parameter to the request
+
+                    .setNotificationConfig(getNotificationConfig(uploadId,R.string.cargando))
+                    .setMaxRetries(2)
+                    .startUpload(); //Starting the upload
+
+        } catch (Exception exc) {
+            Toast.makeText(context, exc.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    protected UploadNotificationConfig getNotificationConfig(final String uploadId, @StringRes int title) {
+        UploadNotificationConfig config = new UploadNotificationConfig();
+
+
+        PendingIntent clickIntent = PendingIntent.getActivity(
+                context, 1, new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
+        config.setTitleForAllStatuses(getString(title))
+                .setRingToneEnabled(false)
+                .setClickIntentForAllStatuses(clickIntent)
+                .setClearOnActionForAllStatuses(true);
+
+        config.getProgress().message = "Subiendo " + UPLOADED_FILES + " de " + TOTAL_FILES
+                + " a " + UPLOAD_RATE + " - " + PROGRESS;
+        config.getProgress().iconResourceID = R.drawable.posible;
+        config.getProgress().iconColorResourceID = Color.BLUE;
+
+        config.getCompleted().message = "Subida completada exitosamente en " + ELAPSED_TIME;
+        config.getCompleted().iconResourceID = R.drawable.posible;
+        config.getCompleted().iconColorResourceID = Color.GREEN;
+
+        config.getError().message = "Error al Cargar Imagen";
+        config.getError().iconResourceID = R.drawable.posible;
+        config.getError().iconColorResourceID = Color.RED;
+
+        config.getCancelled().message = "\n" +
+                "La carga ha sido cancelada";
+        config.getCancelled().iconResourceID = R.drawable.posible;
+        config.getCancelled().iconColorResourceID = Color.YELLOW;
+
+        return config;
     }
 }
 
