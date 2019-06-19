@@ -1,26 +1,27 @@
-package com.bufeotec.sipcsi.Fragments;
+package com.bufeotec.sipcsi.RetrofitRoom.Views;
+
 
 import android.app.Activity;
+import android.app.Application;
 import android.app.Dialog;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
@@ -45,12 +46,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bufeotec.sipcsi.Activitys.Login;
-import com.bufeotec.sipcsi.Adapter.AdaptadorListadoQuejas;
+import com.bufeotec.sipcsi.Fragments.FeedFragment;
 import com.bufeotec.sipcsi.Models.Areas;
-import com.bufeotec.sipcsi.Models.Queja;
 import com.bufeotec.sipcsi.Principal.MainActivity;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.RetrofitRoom.Models.ResultModel;
+import com.bufeotec.sipcsi.RetrofitRoom.Repository.WebServiceRepository;
+import com.bufeotec.sipcsi.RetrofitRoom.ViewModels.PostsListViewModel;
 import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
 import com.loopj.android.http.AsyncHttpClient;
@@ -65,17 +67,15 @@ import net.gotev.uploadservice.UploadNotificationConfig;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import cz.msebera.android.httpclient.Header;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.Context.NOTIFICATION_SERVICE;
-import static com.bufeotec.sipcsi.Services.FireBaseMessaging.NOTIFICACION_ID;
 import static com.bufeotec.sipcsi.WebServices.DataConnection.IP;
 import static net.gotev.uploadservice.Placeholders.ELAPSED_TIME;
 import static net.gotev.uploadservice.Placeholders.PROGRESS;
@@ -83,19 +83,21 @@ import static net.gotev.uploadservice.Placeholders.TOTAL_FILES;
 import static net.gotev.uploadservice.Placeholders.UPLOADED_FILES;
 import static net.gotev.uploadservice.Placeholders.UPLOAD_RATE;
 
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link RetroFitPostFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class RetroFitPostFragment extends Fragment implements View.OnClickListener,  SwipeRefreshLayout.OnRefreshListener{
 
-public class FeedFragment extends Fragment implements View.OnClickListener , SwipeRefreshLayout.OnRefreshListener {
 
 
+    DataConnection dc, dc2;
+    SwipeRefreshLayout swipeRefreshLayout;
     Context context;
     Activity activity;
-    DataConnection dc, dc2;
-    AdaptadorListadoQuejas adaptadorListadoQuejas;
-    public ArrayList<Queja> arrayqueja;
-    RecyclerView rcv_quejas;
     ProgressBar progressBar;
     CardView cdv_mensaje;
-    SwipeRefreshLayout swipeRefreshLayout;
     TextView btn_publicar, dialog_publicar_close, nombre_publicacion;
     public static ArrayList<Areas> arrayArea;
     ArrayList<String> arrayarea;
@@ -105,7 +107,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener , Swi
     EditText et_post;
     ImageButton bt_photo;
     Preferences pref;
-
     boolean valorFoto;
 
 
@@ -115,135 +116,118 @@ public class FeedFragment extends Fragment implements View.OnClickListener , Swi
 
     String url = "http://" + IP + "/index.php?c=Pueblo&a=guardar&key_mobile=123456asdfgh";
 
-    public FeedFragment() {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+    View view = null;
+    PostsListViewModel retroViewModel;
+    ProgressDialog progressDialog;
+    public RetroFitPostFragment() {
         // Required empty public constructor
     }
 
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment RetroFitPostFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static RetroFitPostFragment newInstance(String param1, String param2) {
+        RetroFitPostFragment fragment = new RetroFitPostFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    //    progressDialog = new ProgressDialog(getActivity());
+        retroViewModel = ViewModelProviders.of(getActivity()).get(PostsListViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_feed, container, false);
+        view =  inflater.inflate(R.layout.fragment_retro_fit_post, container, false);
+
         context = getContext();
         activity = getActivity();
-        pref = new Preferences(context);
+        initViews(view);
+        setAdapter();
+       //progressDialog= ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
+       cargarvista();
+        btn_publicar.setOnClickListener(this);
 
-        rcv_quejas = view.findViewById(R.id.rcv_quejas);
+        return  view;
+    }
+
+    RecyclerView recyclerView;
+    private void initViews(View view){
+        recyclerView = (RecyclerView)view.findViewById(R.id.post_list);
         progressBar = view.findViewById(R.id.progressbar);
         cdv_mensaje = view.findViewById(R.id.cdv_mensaje);
         btn_publicar = view.findViewById(R.id.btn_publicar);
-
-        cdv_mensaje.setVisibility(View.GONE);
-
-
-        dc = new DataConnection(activity, "listarQuejas", new Queja(pref.getIdUsuarioPref()), false);
-        new FeedFragment.GetQueja().execute();
-
-
+        pref = new Preferences(context);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.SwipeRefreshLayout);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent);
         swipeRefreshLayout.setOnRefreshListener(this);
 
+    }
 
-        btn_publicar.setOnClickListener(this);
-        return view;
+    Application application;
+    public void cargarvista(){
+        retroViewModel.getAllPosts().observe(this, new Observer<List<com.bufeotec.sipcsi.RetrofitRoom.Models.ResultModel>>() {
+            @Override
+            public void onChanged(@Nullable List<com.bufeotec.sipcsi.RetrofitRoom.Models.ResultModel> resultModels) {
+                adapter.setWords(resultModels);
+                if(progressDialog!=null && progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
+                cdv_mensaje.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
+    RetroPostListAdapter adapter = null;
+    private void setAdapter(){
+        adapter = new RetroPostListAdapter(getActivity());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     @Override
     public void onRefresh() {
 
-        dc = new DataConnection(activity, "listarQuejas", new Queja(pref.getIdUsuarioPref()), false);
-        new FeedFragment.GetQueja().execute();
+
+         WebServiceRepository webServiceRepository = new WebServiceRepository(application);
+         webServiceRepository.providesWebService();
+        setAdapter();
+        cargarvista();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
-
-    public class GetAreas extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            arrayarea = new ArrayList<String>();
-            arrayArea = dc2.getListaAreas();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-            //Toast.makeText(context,"size"+arrayArea.size(),Toast.LENGTH_LONG).show();
-
-            for (Areas obj : arrayArea) {
-                arrayarea.add(obj.getArea_nombre());
-            }
-            //progressBar.setVisibility(ProgressBar.INVISIBLE);
-            arrayarea.add(0, "Seleccione");
-            ArrayAdapter<String> adapEquipos = new ArrayAdapter<String>(context, R.layout.spiner_item, arrayarea);
-            adapEquipos.setDropDownViewResource(R.layout.spiner_dropdown_item);
-            spn_areas.setAdapter(adapEquipos);
-
-        }
-    }
-
-    public class GetQueja extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            arrayqueja = dc.getListaQuejas();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-            progressBar.setVisibility(ProgressBar.INVISIBLE);
-
-            //linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-            linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);
-            //LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-            rcv_quejas.setLayoutManager(linearLayoutManager);
-
-            adaptadorListadoQuejas = new AdaptadorListadoQuejas(context, arrayqueja, R.layout.rcv_item_list_quejas, new AdaptadorListadoQuejas.OnItemClickListener() {
-                @Override
-                public void onItemClick(Queja queja, final int position) {
-
-                    //Toast.makeText(getActivity(),"ID "+empresas.getEmpresas_id(), Toast.LENGTH_SHORT).show();
-
-                    /*Intent intent = new Intent(getContext(), DetalleNegocio.class);
-                    intent.putExtra("id_empresa",empresas.getEmpresas_id());
-                    startActivity(intent);*/
-
-                }
-            });
-            rcv_quejas.setAdapter(adaptadorListadoQuejas);
-            swipeRefreshLayout.setRefreshing(false);
-
-            if (arrayqueja.size() > 0) {
-                cdv_mensaje.setVisibility(View.INVISIBLE);
-            } else {
-                cdv_mensaje.setVisibility(View.VISIBLE);
-            }
-
-        }
-    }
-
+    /**
+     * Called when a view has been clicked.
+     *
+     * @param v The view that was clicked.
+     */
     @Override
     public void onClick(View v) {
 
@@ -252,10 +236,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener , Swi
             //startActivity(i);
             dialogpublicar();
         }
-
     }
-
-
 
     private void dialogpublicar() {
 
@@ -281,7 +262,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener , Swi
         spn_areas = dialog.findViewById(R.id.spn_areas);
         nombre_publicacion.setText(pref.getNombrePref());
         dc2 = new DataConnection(activity, "listarAreas", false);
-        new FeedFragment.GetAreas().execute();
+        new RetroFitPostFragment.GetAreas().execute();
 
 
         bt_photo.setOnClickListener(new View.OnClickListener() {
@@ -343,13 +324,37 @@ public class FeedFragment extends Fragment implements View.OnClickListener , Swi
         dialog.getWindow().setAttributes(lp);
     }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    public class GetAreas extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            arrayarea = new ArrayList<String>();
+            arrayArea = dc2.getListaAreas();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            //Toast.makeText(context,"size"+arrayArea.size(),Toast.LENGTH_LONG).show();
+
+            for (Areas obj : arrayArea) {
+                arrayarea.add(obj.getArea_nombre());
+            }
+            //progressBar.setVisibility(ProgressBar.INVISIBLE);
+            arrayarea.add(0, "Seleccione");
+            ArrayAdapter<String> adapEquipos = new ArrayAdapter<String>(context, R.layout.spiner_item, arrayarea);
+            adapEquipos.setDropDownViewResource(R.layout.spiner_dropdown_item);
+            spn_areas.setAdapter(adapEquipos);
+
+        }
     }
-
-
-
     public void uploadMultipart() {
         //getting name for the image
 
@@ -471,7 +476,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener , Swi
                         //mBottomSheetBehavior1.setState(BottomSheetBehavior.STATE_COLLAPSED);
                         //onRefresh();
                         Toast.makeText(context, "Guardado correctamente", Toast.LENGTH_SHORT).show();
-                        adaptadorListadoQuejas.notifyDataSetChanged();
+                        //adaptadorListadoQuejas.notifyDataSetChanged();
 
 
 
@@ -623,4 +628,12 @@ public class FeedFragment extends Fragment implements View.OnClickListener , Swi
         });
         builder.show();
     }
+
+
+
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
+    }
+
 }

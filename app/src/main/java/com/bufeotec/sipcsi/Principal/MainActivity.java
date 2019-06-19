@@ -78,6 +78,7 @@ import com.bufeotec.sipcsi.Fragments.PuntosTuristicosFragment;
 import com.bufeotec.sipcsi.Fragments.SeguimientoATodos;
 import com.bufeotec.sipcsi.Fragments.TrackingBasureroFragment;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.RetrofitRoom.Views.RetroFitPostFragment;
 import com.bufeotec.sipcsi.WebServices.VolleySingleton;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -111,7 +112,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         PublicacionesFragment.OnFragmentInteractionListener,
         InformacionFragment.OnFragmentInteractionListener,
         AboutFragment.OnFragmentInteractionListener,
-        FeedFragment.OnFragmentInteractionListener {
+        FeedFragment.OnFragmentInteractionListener,
+        RetroFitPostFragment.OnFragmentInteractionListener {
 
 
     public static final String ALARMA= "ALARMA";
@@ -308,7 +310,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public void ShowHome (){
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.contenedor,new FeedFragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.contenedor,new RetroFitPostFragment()).commit();
     }
 
     @Override
@@ -395,7 +397,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         if (id == R.id.pueblo) {
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
-            fragment= new FeedFragment();
+            fragment= new RetroFitPostFragment();
             fragmentTransaction.replace(R.id.contenedor, fragment).addToBackStack("frag").commit();
 
 

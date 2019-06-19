@@ -59,6 +59,23 @@ dependencies {
     //Check for v11.4.2 or higher
     implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-    implementation "net.gotev:uploadservice:3.4"
+    implementation "net.gotev:uploadservice:3.4.2"
+
+
+
+    // Room components
+    implementation "android.arch.persistence.room:runtime:1.1.1"
+    annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
+    androidTestImplementation "android.arch.persistence.room:testing:1.1.1"
+
+// Lifecycle components
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
+
+
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.google.code.gson:gson:2.6.1'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.3.0'
 }
 apply plugin: 'com.google.gms.google-services'

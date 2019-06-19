@@ -16,5 +16,6 @@ public class Initializer extends Application {
         UploadService.NAMESPACE = BuildConfig.APPLICATION_ID;
         // Or, you can define it manually.
         UploadService.NAMESPACE = "com.bufeotec.sipcsi";
+        //UploadService.PROGRESS_REPORT_INTERVAL = 1000;
     }
 }

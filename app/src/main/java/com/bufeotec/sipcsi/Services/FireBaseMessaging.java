@@ -95,10 +95,10 @@ public class FireBaseMessaging extends FirebaseMessagingService {
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
 
     }
-    private void createNotificationChannel(){
+    public void createNotificationChannel(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             CharSequence name = "Noticacion";
-            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_MAX);
+            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_LOW);
             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(notificationChannel);
         }
