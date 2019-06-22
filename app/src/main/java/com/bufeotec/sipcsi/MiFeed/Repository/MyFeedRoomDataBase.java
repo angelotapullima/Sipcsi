@@ -1,4 +1,4 @@
-package com.bufeotec.sipcsi.RetrofitRoom.Repository;
+package com.bufeotec.sipcsi.MiFeed.Repository;
 
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
@@ -7,23 +7,23 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.bufeotec.sipcsi.RetrofitRoom.Models.ResultModel;
+import com.bufeotec.sipcsi.MiFeed.Models.ModelMyFeed;
 
-//import com.andr.mvvm.RetrofitRoom.Models.ResultModel;
+//import com.andr.mvvm.RetrofitRoom.Models.ModelFeed;
 
-@Database(entities = {ResultModel.class}, version = 1)
-public abstract class PostInfoRoomDataBase extends RoomDatabase {
-    public abstract PostInfoDao postInfoDao();
+@Database(entities = {ModelMyFeed.class}, version = 1)
+public abstract class MyFeedRoomDataBase extends RoomDatabase {
+    public abstract MyFeedInfoDao postInfoDao();
 
-    private static PostInfoRoomDataBase INSTANCE;
+    private static MyFeedRoomDataBase INSTANCE;
 
 
-    static PostInfoRoomDataBase getDatabase(final Context context) {
+    static MyFeedRoomDataBase getDatabase(final Context context) {
         if (INSTANCE == null) {
-            synchronized (PostInfoRoomDataBase.class) {
+            synchronized (MyFeedRoomDataBase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            PostInfoRoomDataBase.class, "postinfo_database")
+                            MyFeedRoomDataBase.class, "myfeed_database")
                             .addCallback(sRoomDatabaseCallback)
                             .build();
 
@@ -39,7 +39,7 @@ public abstract class PostInfoRoomDataBase extends RoomDatabase {
                 @Override
                 public void onOpen (@NonNull SupportSQLiteDatabase db){
                     super.onOpen(db);
-                    new PopulateDbAsync(INSTANCE).execute();
+                    new MyFeedDbAsync(INSTANCE).execute();
                 }
             };
 }

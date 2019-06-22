@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bufeotec.sipcsi.MiFeed.Views.MyFeedFragment;
 import com.bufeotec.sipcsi.Models.Usuario;
 import com.bufeotec.sipcsi.R;
 import com.bufeotec.sipcsi.Util.Preferences;
@@ -200,7 +201,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
 
             switch (position){
                 case 0:
-                    fragment = new PublicacionesFragment();
+                    fragment = new MyFeedFragment();
                     break;
                 case 1:
                     fragment = new InformacionFragment();

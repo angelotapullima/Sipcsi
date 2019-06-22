@@ -2,6 +2,9 @@ package com.bufeotec.sipcsi.Fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,25 +18,33 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bufeotec.sipcsi.Activitys.Login;
+import com.bufeotec.sipcsi.Feed.Models.ModelFeed;
+import com.bufeotec.sipcsi.Feed.Repository.FeedDao;
+import com.bufeotec.sipcsi.MiFeed.Repository.MyFeedInfoDao;
+import com.bufeotec.sipcsi.MiFeed.Repository.MyFeedRoomDBRepository;
+import com.bufeotec.sipcsi.MiFeed.Repository.MyFeedRoomDataBase;
+import com.bufeotec.sipcsi.MiFeed.ViewModels.MyFeedListViewModel;
 import com.bufeotec.sipcsi.Models.Usuario;
 import com.bufeotec.sipcsi.R;
 import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.bufeotec.sipcsi.Principal.MainActivity.removerLogin;
 
 
 public class InformacionFragment extends Fragment implements View.OnClickListener {
 
-    TextView Pemail,Pusuario,Prol,Pdni,Pdistrito,Pclave,Pcerrar,Peditar;
+    TextView Pusuario,Prol,Pdni,Pdistrito,Pcerrar,Peditar;
     Activity activity;
     Context context;
     String distrito;
     DataConnection dc;
     ArrayList<Usuario> arrayPerfil;
     Preferences pref;
+    MyFeedListViewModel myFeedListViewModel;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -45,6 +56,7 @@ public class InformacionFragment extends Fragment implements View.OnClickListene
     private OnFragmentInteractionListener mListener;
 
     public InformacionFragment() {
+
         // Required empty public constructor
     }
 
@@ -65,6 +77,7 @@ public class InformacionFragment extends Fragment implements View.OnClickListene
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        myFeedListViewModel = ViewModelProviders.of(getActivity()).get(MyFeedListViewModel.class);
     }
 
     @Override
@@ -79,7 +92,6 @@ public class InformacionFragment extends Fragment implements View.OnClickListene
         Prol = view.findViewById(R.id.Prol);
         Pdistrito = view.findViewById(R.id.Pdistrito);
         Pusuario = view.findViewById(R.id.Pusuario);
-        Pclave = view.findViewById(R.id.Pclave);
         Pcerrar = view.findViewById(R.id.Pcerrar);
         Peditar = view.findViewById(R.id.Peditar);
 
@@ -160,7 +172,6 @@ public class InformacionFragment extends Fragment implements View.OnClickListene
             Pdni.setText(arrayPerfil.get(0).getUsuario_dni());
             Prol.setText(arrayPerfil.get(0).getRol_id());
             Pusuario.setText(arrayPerfil.get(0).getUsuario_nickname());
-            Pclave.setText(arrayPerfil.get(0).getUsuario_contrasenha());
 
 
 
@@ -182,8 +193,12 @@ public class InformacionFragment extends Fragment implements View.OnClickListene
         }
     }
 
+    Application application;
     private void logOut(){
         removerLogin();
+
+        myFeedListViewModel.deleteAllPost();
+
         String login = "0";
         Intent i = new Intent(getActivity(), Login.class);
         i.putExtra("login",login);

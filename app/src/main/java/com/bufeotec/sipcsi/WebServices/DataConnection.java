@@ -11,14 +11,12 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.bufeotec.sipcsi.Activitys.Login;
 import com.bufeotec.sipcsi.Models.Accidentes;
 import com.bufeotec.sipcsi.Models.Alertas;
 import com.bufeotec.sipcsi.Models.Apoyo;
 import com.bufeotec.sipcsi.Models.Areas;
 import com.bufeotec.sipcsi.Models.Delito;
 import com.bufeotec.sipcsi.Models.Puntos;
-import com.bufeotec.sipcsi.Models.Queja;
 import com.bufeotec.sipcsi.Models.Usuario;
 import com.bufeotec.sipcsi.Models.Vehiculos;
 import com.bufeotec.sipcsi.Principal.MainActivity;
@@ -45,7 +43,7 @@ public class DataConnection extends AppCompatActivity {
     public String funcion,idusuario;
     public String parametros,respuesta = "false",cargarDatos;
     boolean mensajeprogres;
-    Queja queja;
+
 
     SharedPreferences sharedPreferences;
 
@@ -58,8 +56,6 @@ public class DataConnection extends AppCompatActivity {
     public ArrayList<Alertas> listaAtenciones= new ArrayList();
     public ArrayList<Vehiculos> listaVehiculosAlerta= new ArrayList();
     public ArrayList<Vehiculos> listaBasureros= new ArrayList();
-    public ArrayList<Queja> listaQuejas= new ArrayList();
-    public ArrayList<Queja> listaMisPublicaciones= new ArrayList();
     public ArrayList<Areas> listaAreas= new ArrayList();
     public ArrayList<Accidentes> listaCausas= new ArrayList();
     public ArrayList<Usuario> listaPerfil= new ArrayList();
@@ -100,14 +96,7 @@ public class DataConnection extends AppCompatActivity {
         new GetAndSet().execute();
     }
 
-    public DataConnection(Activity context, String funcion, Queja queja, boolean mensajeprogres){
-        this.context = context;
-        this.funcion = funcion;
-        this.queja = queja;
-        this.mensajeprogres = mensajeprogres;
 
-        new GetAndSet().execute();
-    }
 
 
 
@@ -215,14 +204,6 @@ public class DataConnection extends AppCompatActivity {
             }if (funcion.equals("listarAtenciones")){
                 parametros = "id_usuario=" + URLEncoder.encode(idusuario,"UTF-8");
                 url = new URL("https://"+IP+"/index.php?c=Alerta&a=listar_mis_atenciones&key_mobile=123456asdfgh");
-
-            }if (funcion.equals("listarQuejas")){
-                parametros = "id=" + URLEncoder.encode(queja.getUsuario_id(),"UTF-8");
-                url = new URL("https://"+IP+"/index.php?c=Pueblo&a=listar_ws&key_mobile=123456asdfgh");
-
-            }if (funcion.equals("listarMisPublicaciones")){
-                parametros = "id=" + URLEncoder.encode(idusuario,"UTF-8");
-                url = new URL("https://"+IP+"/index.php?c=Pueblo&a=listar_mis_publicaciones_ws&key_mobile=123456asdfgh");
 
             }
             if (funcion.equals("listarAreas")){
@@ -508,58 +489,7 @@ public class DataConnection extends AppCompatActivity {
                     }
 
                 }
-                if (funcion.equals("listarQuejas")){
 
-                    JSONArray resultJSON = json_data.getJSONArray("results");
-                    int count = resultJSON.length();
-                    Queja obj;
-
-                    for (int i = 0; i < count;i++){
-
-                        JSONObject jsonNode = resultJSON.getJSONObject(i);
-
-                        obj = new Queja();
-                        obj.setQueja_id(jsonNode.optString("id"));
-                        obj.setUsuario_nombre(jsonNode.optString("usuario"));
-                        obj.setQueja_destino(jsonNode.optString("destino"));
-                        obj.setQueja_descripcion(jsonNode.optString("queja"));
-                        obj.setQueja_foto(jsonNode.optString("foto"));
-                        obj.setQueja_fecha(jsonNode.optString("fecha"));
-                        obj.setQueja_hora(jsonNode.optString("hora"));
-                        obj.setCantidad(jsonNode.optString("cant_likes"));
-                        obj.setEstado_like(jsonNode.optString("dio_like"));
-
-                        //Llenamos los datos al Array
-                        listaQuejas.add(obj);
-                    }
-
-                }
-                if (funcion.equals("listarMisPublicaciones")){
-
-                    JSONArray resultJSON = json_data.getJSONArray("results");
-                    int count = resultJSON.length();
-                    Queja obj;
-
-                    for (int i = 0; i < count;i++){
-
-                        JSONObject jsonNode = resultJSON.getJSONObject(i);
-
-                        obj = new Queja();
-                        obj.setQueja_id(jsonNode.optString("id"));
-                        obj.setUsuario_nombre(jsonNode.optString("usuario"));
-                        obj.setQueja_destino(jsonNode.optString("destino"));
-                        obj.setQueja_descripcion(jsonNode.optString("queja"));
-                        obj.setQueja_foto(jsonNode.optString("foto"));
-                        obj.setQueja_fecha(jsonNode.optString("fecha"));
-                        obj.setQueja_hora(jsonNode.optString("hora"));
-                        obj.setCantidad(jsonNode.optString("cant_likes"));
-                        obj.setEstado_like(jsonNode.optString("dio_like"));
-
-                        //Llenamos los datos al Array
-                        listaMisPublicaciones.add(obj);
-                    }
-
-                }
                 if (funcion.equals("listarAreas")){
 
                     JSONArray resultJSON = json_data.getJSONArray("results");
@@ -959,13 +889,6 @@ public class DataConnection extends AppCompatActivity {
 
     public ArrayList<Vehiculos> getListaVehiculosAlerta(){
         return listaVehiculosAlerta;
-    }
-
-    public ArrayList<Queja> getListaQuejas(){
-        return listaQuejas;
-    }
-    public ArrayList<Queja> getListaMisPublicaciones(){
-        return listaMisPublicaciones;
     }
     public ArrayList<Areas> getListaAreas(){
         return listaAreas;

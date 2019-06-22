@@ -1,4 +1,4 @@
-package com.bufeotec.sipcsi.RetrofitRoom.Models;
+package com.bufeotec.sipcsi.MiFeed.Models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -7,8 +7,8 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "post_info")
-public class ResultModel
+@Entity(tableName = "myfeed_info")
+public class ModelMyFeed
 {
     @PrimaryKey
     @NonNull
@@ -138,7 +138,7 @@ public class ResultModel
 
     @Override
     public String toString() {
-        return "ResultModel{" +"id=" + id +
+        return "ModelFeed{" +"id=" + id +
                 ", usuario='" + usuario + '\'' +
                 ", id_usuario='" + id_usuario + '\'' +
                 ", destino='" + destino + '\'' +
@@ -163,7 +163,7 @@ public class ResultModel
 
 return "ClassPojo [id = "+id+", body = "+body+", title = "+title+"]";
 
- public class ResultModel implements Parcelable{
+ public class ModelFeed implements Parcelable{
         @NonNull
         @ColumnInfo(name = "userId")
         @SerializedName("userId")
@@ -189,13 +189,13 @@ return "ClassPojo [id = "+id+", body = "+body+", title = "+title+"]";
         @Expose
         private String body;
 
-        public final Creator<ResultModel> CREATOR = new Creator<ResultModel>() {
+        public final Creator<ModelFeed> CREATOR = new Creator<ModelFeed>() {
 
             @SuppressWarnings({
                     "unchecked"
             })
-            public ResultModel createFromParcel(Parcel in) {
-                ResultModel instance = new ResultModel();
+            public ModelFeed createFromParcel(Parcel in) {
+                ModelFeed instance = new ModelFeed();
 
                 instance.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
 
@@ -206,8 +206,8 @@ return "ClassPojo [id = "+id+", body = "+body+", title = "+title+"]";
                 return instance;
             }
 
-            public ResultModel[] newArray(int size) {
-                return (new ResultModel[size]);
+            public ModelFeed[] newArray(int size) {
+                return (new ModelFeed[size]);
             }
 
         };

@@ -18,7 +18,7 @@ import java.util.TimerTask;
 public class Splash extends AppCompatActivity {
 
     public TimerTask task;
-    private static final long TIEMPO_SPLASH_SCREEN = 4000;
+    private static final long TIEMPO_SPLASH_SCREEN = 2000;
     Preferences preferencesUser;
 
     @Override

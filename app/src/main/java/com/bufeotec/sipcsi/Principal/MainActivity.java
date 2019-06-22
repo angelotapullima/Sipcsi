@@ -56,8 +56,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.bufeotec.sipcsi.Activitys.DetalleAlarmas;
 import com.bufeotec.sipcsi.Activitys.GPSinactivo;
 import com.bufeotec.sipcsi.BuildConfig;
+import com.bufeotec.sipcsi.Feed.Views.FeedFragment;
 import com.bufeotec.sipcsi.Fragments.AboutFragment;
-import com.bufeotec.sipcsi.Fragments.FeedFragment;
 import com.bufeotec.sipcsi.Fragments.InformacionFragment;
 import com.bufeotec.sipcsi.Fragments.TipsFragment;
 import com.bufeotec.sipcsi.Fragments.ListAlertas;
@@ -73,12 +73,11 @@ import com.bufeotec.sipcsi.Fragments.NumerosEmergenciaFragment;
 import com.bufeotec.sipcsi.Fragments.ParteFragment;
 import com.bufeotec.sipcsi.Fragments.PerfilFragment;
 import com.bufeotec.sipcsi.Fragments.PrimerosAuxiliosFragment;
-import com.bufeotec.sipcsi.Fragments.PublicacionesFragment;
 import com.bufeotec.sipcsi.Fragments.PuntosTuristicosFragment;
 import com.bufeotec.sipcsi.Fragments.SeguimientoATodos;
 import com.bufeotec.sipcsi.Fragments.TrackingBasureroFragment;
+import com.bufeotec.sipcsi.MiFeed.Views.MyFeedFragment;
 import com.bufeotec.sipcsi.R;
-import com.bufeotec.sipcsi.RetrofitRoom.Views.RetroFitPostFragment;
 import com.bufeotec.sipcsi.WebServices.VolleySingleton;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -109,11 +108,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         ListParteApoyoFragment.OnFragmentInteractionListener,
         PuntosTuristicosFragment.OnFragmentInteractionListener,
         TrackingBasureroFragment.OnFragmentInteractionListener, View.OnClickListener,
-        PublicacionesFragment.OnFragmentInteractionListener,
+        MyFeedFragment.OnFragmentInteractionListener,
         InformacionFragment.OnFragmentInteractionListener,
         AboutFragment.OnFragmentInteractionListener,
-        FeedFragment.OnFragmentInteractionListener,
-        RetroFitPostFragment.OnFragmentInteractionListener {
+        FeedFragment.OnFragmentInteractionListener {
 
 
     public static final String ALARMA= "ALARMA";
@@ -125,12 +123,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     Fragment fragment = null;
     //Inicializaos las Variables
     public static String rol_id,nombreuser,vehiculoid;
-    public String usuarioid, distrito;
+    static public String usuarioid, distrito;
     static  String  token = "";
     Toolbar toolbar;
     static String tokenNuevo = "";
     static StringRequest stringRequest;
-    static Context context;
+    Context context;
     String usuario ,clave;
     TextView Nusuario,EmailU;
     private static final String TAG = "FirebaseToken";
@@ -208,12 +206,15 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        toolbar.setElevation(0);
+
 
         //inicializamos el Float Action Button
         fab=findViewById(R.id.multiple_Actions);
         menu_accidente=findViewById(R.id.menu_accidente);
         menu_delito=findViewById(R.id.menu_delito);
         menu_zonavial=findViewById(R.id.menu_zonavial);
+
 
 
 
@@ -310,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public void ShowHome (){
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.contenedor,new RetroFitPostFragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.contenedor,new FeedFragment()).commit();
     }
 
     @Override
@@ -397,7 +398,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         if (id == R.id.pueblo) {
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
-            fragment= new RetroFitPostFragment();
+            fragment= new FeedFragment();
             fragmentTransaction.replace(R.id.contenedor, fragment).addToBackStack("frag").commit();
 
 

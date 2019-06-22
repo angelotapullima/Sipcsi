@@ -1,18 +1,18 @@
-package com.bufeotec.sipcsi.RetrofitRoom.Repository;
+package com.bufeotec.sipcsi.MiFeed.Repository;
 
 import android.os.AsyncTask;
 
-public class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
+public class MyFeedDbAsync extends AsyncTask<Void, Void, Void> {
 
-    private final PostInfoDao mDao;
+    private final MyFeedInfoDao mDao;
 
-    PopulateDbAsync(PostInfoRoomDataBase db) {
+    MyFeedDbAsync(MyFeedRoomDataBase db) {
         mDao = db.postInfoDao();
     }
 
     @Override
     protected Void doInBackground(final Void... params) {
-        mDao.deleteAll();
+        //mDao.deleteAll(); //esto borra todo lo guardado
        /* User user = new User("Chandra","SW");
         mDao.insert(user);
         user = new User("Mohan","student");

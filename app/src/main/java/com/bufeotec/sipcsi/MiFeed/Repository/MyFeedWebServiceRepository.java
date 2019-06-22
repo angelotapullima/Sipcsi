@@ -1,13 +1,14 @@
-package com.bufeotec.sipcsi.RetrofitRoom.Repository;
+package com.bufeotec.sipcsi.MiFeed.Repository;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
-//import com.andr.mvvm.RetrofitRoom.Models.ResultModel;
-
-import com.bufeotec.sipcsi.RetrofitRoom.Models.ResultModel;
+import com.bufeotec.sipcsi.MiFeed.Models.ModelMyFeed;
+import com.bufeotec.sipcsi.Util.Preferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,12 +26,19 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-public class WebServiceRepository {
+import static com.bufeotec.sipcsi.Principal.MainActivity.usuarioid;
+
+//import com.andr.mvvm.RetrofitRoom.Models.ModelFeed;
+
+public class MyFeedWebServiceRepository {
 
     Application application;
-    public  WebServiceRepository(Application application){
+    Context context;
+    public MyFeedWebServiceRepository(Application application ){
         this.application = application;
     }
+
+
     private static OkHttpClient providesOkHttpClientBuilder(){
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -40,11 +48,12 @@ public class WebServiceRepository {
     }
 
 
-    List<ResultModel> webserviceResponseList = new ArrayList<>();
+    List<ModelMyFeed> webserviceResponseList = new ArrayList<>();
 
- public LiveData<List<ResultModel>> providesWebService() {
+ public LiveData<List<ModelMyFeed>> providesWebService() {
 
-     final MutableLiveData<List<ResultModel>> data = new MutableLiveData<>();
+
+     final MutableLiveData<List<ModelMyFeed>> data = new MutableLiveData<>();
 
      String response = "";
      try {
@@ -58,13 +67,13 @@ public class WebServiceRepository {
          //Defining retrofit api service
          APIService service = retrofit.create(APIService.class);
         //  response = service.makeRequest().execute().body();
-         service.savePost("19").enqueue(new Callback<String>() {
+         service.savePost(usuarioid).enqueue(new Callback<String>() {
              @Override
              public void onResponse(Call<String> call, Response<String> response) {
                  Log.d("Repository","Response::::"+response.body());
                  webserviceResponseList = parseJson(response.body());
-                 PostRoomDBRepository postRoomDBRepository = new PostRoomDBRepository(application);
-                 postRoomDBRepository.insertPosts(webserviceResponseList);
+                 MyFeedRoomDBRepository myFeedRoomDBRepository = new MyFeedRoomDBRepository(application);
+                 myFeedRoomDBRepository.insertPosts(webserviceResponseList);
                  data.setValue(webserviceResponseList);
 
              }
@@ -78,15 +87,15 @@ public class WebServiceRepository {
          e.printStackTrace();
      }
 
-     //  return retrofit.create(ResultModel.class);
+     //  return retrofit.create(ModelFeed.class);
      return  data;
 
     }
 
 
-    private List<ResultModel> parseJson(String response) {
+    private List<ModelMyFeed> parseJson(String response) {
 
-        List<ResultModel> apiResults = new ArrayList<>();
+        List<ModelMyFeed> apiResults = new ArrayList<>();
 
         JSONObject jsonObject;
 
@@ -101,20 +110,20 @@ public class WebServiceRepository {
 
             for (int i = 0; i < count; i++) {
                 JSONObject jsonNode = resultJSON.getJSONObject(i);
-                ResultModel mMovieModel = new ResultModel();
+                ModelMyFeed myFeed = new ModelMyFeed();
 
                 //mMovieModel.setId(object.getString("id"));
-                mMovieModel.setId(jsonNode.getString("id"));
-                mMovieModel.setUsuario(jsonNode.getString("usuario"));
-                mMovieModel.setId_usuario(jsonNode.getString("id_usuario"));
-                mMovieModel.setDestino(jsonNode.getString("destino"));
-                mMovieModel.setQueja(jsonNode.getString("queja"));
-                mMovieModel.setFoto(jsonNode.getString("foto"));
-                mMovieModel.setFecha(jsonNode.getString("fecha"));
-                mMovieModel.setCant_likes(jsonNode.getString("cant_likes"));
-                mMovieModel.setDio_like(jsonNode.getString("dio_like"));
+                myFeed.setId(jsonNode.getString("id"));
+                myFeed.setUsuario(jsonNode.getString("usuario"));
+                myFeed.setId_usuario(jsonNode.getString("id_usuario"));
+                myFeed.setDestino(jsonNode.getString("destino"));
+                myFeed.setQueja(jsonNode.getString("queja"));
+                myFeed.setFoto(jsonNode.getString("foto"));
+                myFeed.setFecha(jsonNode.getString("fecha"));
+                myFeed.setCant_likes(jsonNode.getString("cant_likes"));
+                myFeed.setDio_like(jsonNode.getString("dio_like"));
 
-                apiResults.add(mMovieModel);
+                apiResults.add(myFeed);
             }
 
 
@@ -126,4 +135,6 @@ public class WebServiceRepository {
         return apiResults;
 
     }
+
+
 }
