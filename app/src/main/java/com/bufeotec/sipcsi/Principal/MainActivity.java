@@ -546,15 +546,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             fragmentTransaction.replace(R.id.contenedor, fragment).addToBackStack("frag").commit();
 
         }
-        else if (id == R.id.gps) {
-
-            if (!checkPermissions()) {
-                requestPermissions();
-            } else {
-                mService.requestLocationUpdates();
-            }
-
-        }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout1);

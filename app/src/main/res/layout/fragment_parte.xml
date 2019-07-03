@@ -70,7 +70,7 @@
         android:orientation="vertical"
         android:id="@+id/arriba"
         android:background="@color/colorPrimaryDark"
-        android:layout_height="180dp">
+        android:layout_height="150dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -80,7 +80,7 @@
             android:id="@+id/titulo"
             android:text="Parte Apoyo"
             android:textAlignment="center"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:layout_marginBottom="28dp"/>
 
 
@@ -104,16 +104,7 @@
             android:paddingTop="22dp"
             android:paddingBottom="22dp">
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/btnMapaApoyo"
-                android:layout_marginRight="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginBottom="16dp"
-                android:text="Seleccionar UBICACIÓN en el mapa"
-                android:background="@drawable/verde"
-                android:textColor="@color/white"/>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -352,6 +343,16 @@
                     android:lines="3"
                     android:padding="5dp"
                     android:scrollbars="vertical"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnMapaApoyo"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Seleccionar UBICACIÓN en el mapa"
+                    android:background="@drawable/verde"
+                    android:textColor="@color/white"/>
 
 
                 <LinearLayout

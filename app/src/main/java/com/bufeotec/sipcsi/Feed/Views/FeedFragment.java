@@ -62,6 +62,7 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationAction;
 import net.gotev.uploadservice.UploadNotificationConfig;
+import net.gotev.uploadservice.UploadService;
 
 import org.apache.commons.io.FileUtils;
 
@@ -395,6 +396,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener,  Swi
 
 
 
+
     protected UploadNotificationConfig getNotificationConfig(final String uploadId, @StringRes int title) {
         UploadNotificationConfig config = new UploadNotificationConfig();
 
@@ -404,10 +406,10 @@ public class FeedFragment extends Fragment implements View.OnClickListener,  Swi
         PendingIntent clickIntent = PendingIntent.getActivity(
                 context, 1, new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
+
         config.setTitleForAllStatuses(getString(title))
                 .setRingToneEnabled(false)
-                .setClickIntentForAllStatuses(clickIntent)
-                .addActionForAllStatuses(new UploadNotificationAction(R.drawable.posible,"Cargando Imagenes" ,clickIntent));
+                .setClickIntentForAllStatuses(clickIntent);
 
 
 
@@ -415,10 +417,14 @@ public class FeedFragment extends Fragment implements View.OnClickListener,  Swi
                 + " a " + UPLOAD_RATE + " - " + PROGRESS;
         config.getProgress().iconResourceID = R.drawable.posible;
         config.getProgress().iconColorResourceID = Color.BLUE;
+        config.getProgress().actions.add(new UploadNotificationAction(R.drawable.posible,"Ver progreso",clickIntent));
+
+
 
         config.getCompleted().message = "Subida completada exitosamente en " + ELAPSED_TIME;
         config.getCompleted().iconResourceID = R.drawable.posible;
         config.getCompleted().iconColorResourceID = Color.GREEN;
+        config.getCompleted().actions.add(new UploadNotificationAction(R.drawable.posible,"Imagen Cargada Exitosamente",clickIntent));
 
         config.getError().message = "Error al Cargar Imagen";
         config.getError().iconResourceID = R.drawable.posible;

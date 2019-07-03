@@ -108,7 +108,7 @@ public class PuntosTuristicosFragment extends Fragment implements OnMapReadyCall
         Tdireccion=view.findViewById(R.id.Tdireccion);
 
         mBottomSheetBehavior1 = BottomSheetBehavior.from(bottomSheet);
-        mBottomSheetBehavior1.setPeekHeight(100);
+        mBottomSheetBehavior1.setPeekHeight(80);
         mBottomSheetBehavior1.setState(BottomSheetBehavior.STATE_COLLAPSED);
         mBottomSheetBehavior1.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override

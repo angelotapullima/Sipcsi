@@ -246,6 +246,11 @@ public class DataConnection extends AppCompatActivity {
                 url = new URL("https://"+IP+"/index.php?c=Mapa&a=puntos_turisticos&key_mobile=123456asdfgh");
 
             }
+            if (funcion.equals("listarPoints")){
+                parametros = " " + URLEncoder.encode(" ","UTF-8");
+                url = new URL("https://"+IP+"/angelo/points.php");
+
+            }
 
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
@@ -384,6 +389,25 @@ public class DataConnection extends AppCompatActivity {
                         //Llenamos los datos al Array
                         listpuntos.add(obj);
                     }
+                }
+                if(funcion.equals("listarPoints")){
+
+                    JSONArray resultJSON = json_data.getJSONArray("results");
+                    int count = resultJSON.length();
+                    Puntos obj;
+
+                    for (int i = 0; i < count;i++){
+
+                        JSONObject jsonNode = resultJSON.getJSONObject(i);
+
+                        obj = new Puntos();
+                        obj.setLat(jsonNode.optString("lat"));
+                        obj.setLongitud(jsonNode.optString("lng"));
+
+
+                        //Llenamos los datos al Array
+                        listpuntos.add(obj);
+                    }
                 }if (funcion.equals("listarVehiculos")){
 
                     JSONArray resultJSON = json_data.getJSONArray("results");
@@ -481,7 +505,7 @@ public class DataConnection extends AppCompatActivity {
                         obj.setId_vehiculo(jsonNode.optString("id_vehiculo"));
                         obj.setTok(jsonNode.optString("token"));
                         obj.setUsuario(jsonNode.optString("usuario"));
-                        obj.setFechora(jsonNode.optString("alerta_fechahora"));
+                        obj.setFechora(jsonNode.optString("alerta_fchahora"));
                         obj.setHacetiempo(jsonNode.optString("alerta_fecha_hace"));
 
                         //Llenamos los datos al Array
@@ -702,6 +726,8 @@ public class DataConnection extends AppCompatActivity {
                         obj.setColor(jsonNode.optString("color"));
                         obj.setLatitud(jsonNode.optString("vehiculo_coord_x"));
                         obj.setLongitud(jsonNode.optString("vehiculo_coord_y"));
+                        obj.setLatitud_antiguo(jsonNode.optString("ant_x"));
+                        obj.setLongitud_antiguo(jsonNode.optString("ant_y"));
                         obj.setFecha(jsonNode.optString("fecha"));
                         //Llenamos los datos al Array
                         listaBasureros.add(obj);
@@ -897,6 +923,7 @@ public class DataConnection extends AppCompatActivity {
     public ArrayList<Alertas> getListaAtenciones(){
         return listaAtenciones;
     }
+
 
 
     public ArrayList<Accidentes> getListaAccidentes(){

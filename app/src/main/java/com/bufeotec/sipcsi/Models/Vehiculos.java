@@ -9,6 +9,8 @@ public class Vehiculos {
     private String color;
     private String latitud;
     private String longitud;
+    private String latitud_antiguo;
+    private String longitud_antiguo;
     private String tipo;
     private String Hacetiempo;
 
@@ -126,5 +128,21 @@ public class Vehiculos {
 
     public void setLongitud(String longitud) {
         this.longitud = longitud;
+    }
+
+    public String getLatitud_antiguo() {
+        return latitud_antiguo;
+    }
+
+    public void setLatitud_antiguo(String latitud_antiguo) {
+        this.latitud_antiguo = latitud_antiguo;
+    }
+
+    public String getLongitud_antiguo() {
+        return longitud_antiguo;
+    }
+
+    public void setLongitud_antiguo(String longitud_antiguo) {
+        this.longitud_antiguo = longitud_antiguo;
     }
 }

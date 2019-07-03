@@ -86,10 +86,7 @@
                 android:id="@+id/about"
                 android:icon="@drawable/bufeo"
                 android:title="¿Quienes Somos?" />
-            <item
-                android:id="@+id/gps"
-                android:icon="@drawable/mar"
-                android:title="Empezar Traking" />
+
         </menu>
     </item>
 

@@ -6,10 +6,12 @@
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp">
         <LinearLayout
             android:id="@+id/tap_action_layout"
             android:padding="10dp"
@@ -27,6 +29,7 @@
         </LinearLayout>
 
 
+        <!-- Modal puntos "gone"-->
         <LinearLayout
             android:layout_width="match_parent"
             android:visibility="gone"
@@ -118,7 +121,7 @@
 
         </LinearLayout>
 
-
+        <!-- Modal Turismo-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -133,14 +136,14 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/Tnombre"
                     android:layout_width="wrap_content"
-                    android:text="DATOS DEL AGENTE"
+                    android:text="Datos del Lugar"
                     android:textStyle="bold"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:textColor="@android:color/black"/>
 
                 <ImageView
-                    android:background="@color/colorPrimary"
+                    android:background="@color/card_bg"
                     android:layout_height="150dp"
                     android:layout_width="match_parent"
                     android:id="@+id/Timagen"
@@ -169,7 +172,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:id="@+id/Tdescripcion"
-                    android:text="Elegir un agente para ver esta información"
+                    android:text="Elegir un marcador para ver esta información"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
                     android:textColor="@android:color/black"/>
@@ -194,7 +197,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:id="@+id/Tdireccion"
-                    android:text="Elegir un agente para ver esta información"
+                    android:text="Elegir un marcador para ver esta información"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
                     android:textColor="@android:color/black"/>
