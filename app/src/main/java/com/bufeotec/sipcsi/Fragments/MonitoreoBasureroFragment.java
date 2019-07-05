@@ -271,6 +271,12 @@ public class MonitoreoBasureroFragment extends Fragment implements OnMapReadyCal
     }
 
 
+    @Override
+    public void onResume() {
+        ejecutarCadaTiempo();
+        super.onResume();
+    }
+
 
 
 
@@ -288,7 +294,9 @@ public class MonitoreoBasureroFragment extends Fragment implements OnMapReadyCal
                 startPosition = new LatLng(startLatitude, startLongitude);
 
                 marcador_ = mMap.addMarker(new MarkerOptions().position(startPosition).
-                        flat(true).icon(BitmapDescriptorFactory.fromResource(R.drawable.car)));
+                        flat(true)
+                        .title(listaBasureros.get(0).getPlaca() + " " + listaBasureros.get(0).getFecha())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.car)));
                 marcador_.setAnchor(0.5f, 0.5f);
 
                 mMap.moveCamera(CameraUpdateFactory

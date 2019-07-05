@@ -61,7 +61,6 @@ class Utils {
     }
 
     static String getLocationTitle(Context context) {
-        return context.getString(R.string.title_notificacion,
-                DateFormat.getDateTimeInstance().format(new Date()));
+        return context.getString(R.string.title_notificacion);
     }
 }

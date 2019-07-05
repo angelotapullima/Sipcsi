@@ -235,6 +235,21 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         dialog.setCancelable(true);
 
 
+        tfinal.setText(feinal);
+        tinicio.setText(finicio);
+        if (basura){
+            chBasura.setChecked(true);
+        }if (accidentes){
+            chAccidentes.setChecked(true);
+        }if (delitos){
+            chDelitos.setChecked(true);
+        }if (vial){
+            chVial.setChecked(true);
+        }if (camaras){
+            chCamaras.setChecked(true);
+        }
+
+
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -399,7 +414,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         feinal=dateFormat.format(date);
-        finicio="2019-01-01";
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(calendar.MONTH, -1);
+
+
+        finicio=dateFormat.format(calendar.getTime());
+
 
         obj= new Puntos();
         obj.setAccidentes(String.valueOf(accidentes));
