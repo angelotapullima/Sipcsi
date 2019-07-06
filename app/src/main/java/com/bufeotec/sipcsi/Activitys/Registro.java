@@ -41,6 +41,7 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
         setContentView(R.layout.activity_registro);
         context=this;
 
+
         showToolbar("Registro" ,true);
 
         act_nombreUsuario = findViewById(R.id.act_nombreUsuario);

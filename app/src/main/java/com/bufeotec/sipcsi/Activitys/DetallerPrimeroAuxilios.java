@@ -23,6 +23,7 @@ public class DetallerPrimeroAuxilios extends AppCompatActivity {
         titulo = getIntent().getExtras().getString("titulo");
         des = getIntent().getExtras().getString("des");
 
+
         Dtitulo=findViewById(R.id.Dtitulo);
         Ddes=findViewById(R.id.Ddes);
 

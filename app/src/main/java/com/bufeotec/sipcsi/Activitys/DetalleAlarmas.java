@@ -122,6 +122,8 @@ public class DetalleAlarmas extends AppCompatActivity implements OnMapReadyCallb
     String tipoNotificacion = "";
     String validaciondireccion = "";
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

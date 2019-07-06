@@ -101,6 +101,7 @@ public class MapaAlertas extends AppCompatActivity implements OnMapReadyCallback
 
 
 
+        //todo modificado como quiere Milhaus
         View headerLayout1 = findViewById(R.id.bottomJsoft);
         tapactionlayout = (LinearLayout) findViewById(R.id.tap_action_layout);
 
@@ -118,6 +119,9 @@ public class MapaAlertas extends AppCompatActivity implements OnMapReadyCallback
         botomTurismo.setVisibility(View.GONE);
         botomAlertas.setVisibility(View.VISIBLE);
         botomPuntos.setVisibility(View.GONE);
+
+
+
 
         mBottomSheetBehavior1 = BottomSheetBehavior.from(bottomSheet);
         mBottomSheetBehavior1.setPeekHeight(80);
