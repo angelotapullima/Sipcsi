@@ -83,7 +83,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     Button filtro   ;
     String finicio,feinal;
     int dia,mes,ano;
-    LinearLayout botomPuntos, botomTurismo;
+    LinearLayout botomPuntos, botomTurismo,botomAlertas;
     LinearLayout tapactionlayout;
     private BottomSheetBehavior mBottomSheetBehavior1;
 
@@ -161,8 +161,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         txtfe=view.findViewById(R.id.txtfe);
         botomPuntos=view.findViewById(R.id.botomPuntos);
         botomTurismo=view.findViewById(R.id.botomTurismo);
+        botomAlertas=view.findViewById(R.id.botomAlertas);
 
         botomTurismo.setVisibility(View.GONE);
+        botomAlertas.setVisibility(View.GONE);
         botomPuntos.setVisibility(View.VISIBLE);
         mBottomSheetBehavior1 = BottomSheetBehavior.from(bottomSheet);
         mBottomSheetBehavior1.setPeekHeight(70);

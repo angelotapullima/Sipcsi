@@ -11,7 +11,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="10dp">
         <LinearLayout
             android:id="@+id/tap_action_layout"
             android:padding="10dp"
@@ -123,6 +123,7 @@
 
         <!-- Modal Turismo-->
         <LinearLayout
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/botomTurismo"
@@ -205,6 +206,95 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <!-- Modal Alertas-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:id="@+id/botomAlertas"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/fecha"
+                                android:layout_alignParentRight="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="hace instantes"/>
+
+                        </RelativeLayout>
+
+
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tipo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="HOMICIDIO"
+                        android:padding="5dp"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"/>
+                    <TextView
+                        android:id="@+id/direc"
+                        android:layout_width="wrap_content"
+                        android:textSize="18sp"
+                        android:layout_height="wrap_content"
+                        android:text="Alzamora 956"/>
+
+                    <TextView
+                        android:id="@+id/description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Un hombre quizo matar a un ladro"/>
+
+
+                    <ImageView
+                        android:background="@color/card_bg"
+                        android:layout_height="150dp"
+                        android:layout_width="match_parent"
+                        android:id="@+id/fotoAlerta"
+                        android:scaleType="centerCrop"/>
+
+
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:id="@+id/btnAtendida"
+                        android:layout_marginTop="10dp"
+                        android:text="ALARMA ATENDIDA"
+                        android:textColor="@color/white"
+                        android:layout_height="45dp"
+                        android:background="@drawable/accent"/>
+                </LinearLayout>
+
+
+
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+
+
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

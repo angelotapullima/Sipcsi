@@ -117,7 +117,10 @@ public class DetalleAlarmas extends AppCompatActivity implements OnMapReadyCallb
     JSONObject json_data;
     CheckBox checkFoto;
     Preferences pref;
-
+    String valorcodigo;
+    String urlGuardar = "https://\"+IP+\"/index.php?c=Alerta&a=guardar&key_mobile=123456asdfgh";
+    String tipoNotificacion = "";
+    String validaciondireccion = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -361,8 +364,7 @@ public class DetalleAlarmas extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    String tipoNotificacion = "";
-    String validaciondireccion = "";
+
 
     public void enviar (){
         validaciondireccion = direc.getText().toString();
@@ -557,8 +559,7 @@ public class DetalleAlarmas extends AppCompatActivity implements OnMapReadyCallb
 
     }
 
-    String valorcodigo;
-    String urlGuardar = "https://\"+IP+\"/index.php?c=Alerta&a=guardar&key_mobile=123456asdfgh";
+
 
     public void enviarConFoto() {
 

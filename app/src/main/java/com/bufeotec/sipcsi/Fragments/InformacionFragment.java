@@ -46,12 +46,7 @@ public class InformacionFragment extends Fragment implements View.OnClickListene
     Preferences pref;
     MyFeedListViewModel myFeedListViewModel;
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -61,22 +56,11 @@ public class InformacionFragment extends Fragment implements View.OnClickListene
     }
 
 
-    public static InformacionFragment newInstance(String param1, String param2) {
-        InformacionFragment fragment = new InformacionFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
         myFeedListViewModel = ViewModelProviders.of(getActivity()).get(MyFeedListViewModel.class);
     }
 
@@ -106,35 +90,9 @@ public class InformacionFragment extends Fragment implements View.OnClickListene
         return  view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
 
-    /**
-     * Called when a view has been clicked.
-     *
-     * @param v The view that was clicked.
-     */
     @Override
     public void onClick(View v) {
 
@@ -193,7 +151,6 @@ public class InformacionFragment extends Fragment implements View.OnClickListene
         }
     }
 
-    Application application;
     private void logOut(){
         removerLogin();
 

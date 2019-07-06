@@ -11,6 +11,8 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +21,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,8 +73,14 @@ public class MapaAlertas extends AppCompatActivity implements OnMapReadyCallback
     boolean run = false;
     TextView txtNombre ,txtdes,txtfe ,txtHo;
     Button btnAtendida;
+
+    LinearLayout botomPuntos, botomTurismo,botomAlertas;
     static boolean valor = false;
 
+
+    View bottomSheet;
+    LinearLayout tapactionlayout;
+    private BottomSheetBehavior mBottomSheetBehavior1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,13 +98,57 @@ public class MapaAlertas extends AppCompatActivity implements OnMapReadyCallback
         txtdes=findViewById(R.id.txtdes);
         txtHo=findViewById(R.id.txtHo);
         txtfe=findViewById(R.id.txtfe);
+
+
+
+        View headerLayout1 = findViewById(R.id.bottomJsoft);
+        tapactionlayout = (LinearLayout) findViewById(R.id.tap_action_layout);
+
+        bottomSheet = findViewById(R.id.bottomJsoft);
         tips=findViewById(R.id.tipo);
         description=findViewById(R.id.description);
         direc=findViewById(R.id.direc);
         fecha=findViewById(R.id.fecha);
         btnAtendida=findViewById(R.id.btnAtendida);
 
+        botomPuntos=findViewById(R.id.botomPuntos);
+        botomTurismo=findViewById(R.id.botomTurismo);
+        botomAlertas=findViewById(R.id.botomAlertas);
 
+        botomTurismo.setVisibility(View.GONE);
+        botomAlertas.setVisibility(View.VISIBLE);
+        botomPuntos.setVisibility(View.GONE);
+
+        mBottomSheetBehavior1 = BottomSheetBehavior.from(bottomSheet);
+        mBottomSheetBehavior1.setPeekHeight(80);
+        mBottomSheetBehavior1.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        mBottomSheetBehavior1.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    tapactionlayout.setVisibility(View.VISIBLE);
+                }
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    tapactionlayout.setVisibility(View.GONE);
+                }
+                if (newState == BottomSheetBehavior.STATE_DRAGGING) {
+                    tapactionlayout.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+            }
+        });
+
+        tapactionlayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mBottomSheetBehavior1.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                    mBottomSheetBehavior1.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+            }
+        });
 
 
         idAler=getIntent().getExtras().getString("alertaid");

@@ -47,10 +47,11 @@ public class PuntosTuristicosFragment extends Fragment implements OnMapReadyCall
     GoogleMap mMap;
     DataConnection dc;
     Marker marcador_;
-    View bottomSheet;
     ImageView Timagen;
+    View bottomSheet;
     LinearLayout tapactionlayout;
     private BottomSheetBehavior mBottomSheetBehavior1;
+    LinearLayout botomPuntos, botomTurismo,botomAlertas;
     TextView Tnombre ,Tdescripcion,Tdireccion;
 
     public ArrayList<Puntos> listaTuristicos;
@@ -106,6 +107,13 @@ public class PuntosTuristicosFragment extends Fragment implements OnMapReadyCall
         Timagen=view.findViewById(R.id.Timagen);
         Tdescripcion=view.findViewById(R.id.Tdescripcion);
         Tdireccion=view.findViewById(R.id.Tdireccion);
+        botomPuntos=view.findViewById(R.id.botomPuntos);
+        botomTurismo=view.findViewById(R.id.botomTurismo);
+        botomAlertas=view.findViewById(R.id.botomAlertas);
+
+        botomTurismo.setVisibility(View.VISIBLE);
+        botomAlertas.setVisibility(View.GONE);
+        botomPuntos.setVisibility(View.GONE);
 
         mBottomSheetBehavior1 = BottomSheetBehavior.from(bottomSheet);
         mBottomSheetBehavior1.setPeekHeight(80);
