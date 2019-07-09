@@ -1,41 +1,29 @@
-package com.bufeotec.sipcsi.Fragments;
+package com.bufeotec.sipcsi.Activitys;
 
 import android.Manifest;
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.location.Location;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
-import android.widget.Toast;
 
-import com.android.volley.toolbox.StringRequest;
 import com.bufeotec.sipcsi.Models.Puntos;
 import com.bufeotec.sipcsi.Models.Vehiculos;
 import com.bufeotec.sipcsi.R;
 import com.bufeotec.sipcsi.Util.Preferences;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -43,98 +31,49 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 
-import static io.fabric.sdk.android.Fabric.TAG;
+public class MonitoreoBasurero extends AppCompatActivity implements OnMapReadyCallback {
 
-
-public class MonitoreoBasureroFragment extends Fragment implements OnMapReadyCallback {
-
-    Activity activity;
-    Context context;
+    private static final String TAG = "MoniBasurero";
     DataConnection dc, dc2;
     GoogleMap mMap;
     boolean run = false;
     Marker marcador_;
+    Vehiculos vehiculos;
     boolean valor = false;
     public ArrayList<Vehiculos> listaBasureros;
     public  ArrayList<Puntos> listPoints;
     Preferences pref;
     public  float v;
-    public  double lat, lng;
-    public  LatLng startPosition;
+    public  double lat, lng,lati,longi;
+    public LatLng startPosition;
     public  LatLng endPosition;
     public  boolean isFirstPosition = true;
     public Double startLatitude ,startLongitude;
+    String idVehiculo,placa,tok;
+    Context context;
 
-
-
-
-    private OnFragmentInteractionListener mListener;
-
-    public MonitoreoBasureroFragment() {
-        // Required empty public constructor
-    }
+    static ArrayList<LatLng> points = null;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_monitoreo_basurero);
+        context=this;
+        idVehiculo=getIntent().getExtras().getString("id_vehiculo");
+        //lati= Double.valueOf(getIntent().getExtras().getString("lat"));
+        //longi= Double.valueOf(getIntent().getExtras().getString("long"));
+        tok= getIntent().getExtras().getString("tok");
+        placa= getIntent().getExtras().getString("placa");
 
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_basurero);
+        pref=new Preferences(context);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map_basurero);
         mapFragment.getMapAsync(this);
-
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_monitoreo_basurero, container, false);
-        activity = getActivity();
-        context = getContext();
-        pref = new Preferences(context);
         ejecutarCadaTiempo();
-        getActivity().setTitle("Monitoreo Basurero");
-        return view;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        showToolbar(placa,true);
     }
 
     @Override
@@ -142,17 +81,23 @@ public class MonitoreoBasureroFragment extends Fragment implements OnMapReadyCal
 
         mMap = googleMap;
 
+        vehiculos= new Vehiculos();
+        vehiculos.setId_vehiculo(idVehiculo);
+        vehiculos.setTok(pref.getNombrePref());
+        //LatLng punto = new LatLng(lati, longi);
+        //mMap.addMarker(new MarkerOptions().position(punto).title("Mi Posición"));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(punto));
 
-        dc2 = new DataConnection(getActivity(), "listarPoints", false);
-        new MonitoreoBasureroFragment.GetPoints().execute();
+        dc2 = new DataConnection(this, "listarRutasBasureros",idVehiculo, false);
+        new MonitoreoBasurero.GetPoints().execute();
 
 
-        dc = new DataConnection(getActivity(), "listarBasureros", pref.getDistritoIdPref(), false);
-        new MonitoreoBasureroFragment.GetBasureros().execute();
+        dc = new DataConnection(this, "ubicacionVehiculo", vehiculos, false);
+        new MonitoreoBasurero.GetBasureros().execute();
 
-        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION)
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                         != PackageManager.PERMISSION_GRANTED) {
             return;
 
@@ -160,6 +105,11 @@ public class MonitoreoBasureroFragment extends Fragment implements OnMapReadyCal
         mMap.setMyLocationEnabled(true);
 
 
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return false;
     }
 
     public  class GetBasureros extends AsyncTask<Void, Void, Void> {
@@ -171,7 +121,7 @@ public class MonitoreoBasureroFragment extends Fragment implements OnMapReadyCal
 
         @Override
         protected Void doInBackground(Void... params) {
-            listaBasureros = dc.getListaBasureros();
+            listaBasureros = dc.getListaUbicacion();
             return null;
         }
 
@@ -191,7 +141,7 @@ public class MonitoreoBasureroFragment extends Fragment implements OnMapReadyCal
 
         @Override
         protected Void doInBackground(Void... params) {
-            listPoints = dc2.getPuntos();
+            listPoints = dc2.getListaRutasBasureros();
             return null;
         }
 
@@ -202,7 +152,6 @@ public class MonitoreoBasureroFragment extends Fragment implements OnMapReadyCal
         }
     }
 
-    static ArrayList<LatLng> points = null;
 
     public void CargarPointsAMapa() {
 
@@ -226,9 +175,6 @@ public class MonitoreoBasureroFragment extends Fragment implements OnMapReadyCal
 
         }
     }
-
-
-
 
 
     private void startBikeAnimation(final LatLng start, final LatLng end) {
@@ -270,14 +216,11 @@ public class MonitoreoBasureroFragment extends Fragment implements OnMapReadyCal
         valueAnimator.start();
     }
 
-
     @Override
     public void onResume() {
         ejecutarCadaTiempo();
         super.onResume();
     }
-
-
 
 
     public  void CargarPuntosAMapa() {
@@ -330,61 +273,6 @@ public class MonitoreoBasureroFragment extends Fragment implements OnMapReadyCal
 
 
 
-
-
-
-        //if (marcador_!= null){ marcador_.remove();     }
-
-
-        /*int  i = 0 ;
-        //if (listaBasureros.size() > 0) {
-
-
-            LatLng ultpos = null;
-            //for (int i = 0; i < listaBasureros.size(); i++) {
-
-
-                startPosition = new LatLng(Double.parseDouble(listaBasureros.get(i).getLatitud()),Double.parseDouble(listaBasureros.get(i).getLongitud()));
-                endPosition = new LatLng(Double.parseDouble(listaBasureros.get(i).getLatitud_antiguo()),Double.parseDouble(listaBasureros.get(i).getLongitud_antiguo()));
-
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(new LatLng((Double.parseDouble(listaBasureros.get(i).getLatitud()))
-                        , (Double.parseDouble(listaBasureros.get(i).getLongitud()))))
-                        .title(listaBasureros.get(i).getPlaca());
-                //.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
-
-                marcador_ = mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(Double.parseDouble(listaBasureros.get(i).getLatitud()),Double.parseDouble(listaBasureros.get(i).getLatitud())))
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.car))
-                        //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-                        .title(listaBasureros.get(i).getPlaca() + " " + listaBasureros.get(i).getFecha())
-
-                );
-
-
-
-
-
-
-
-
-                ultpos = new LatLng((Double.parseDouble(listaBasureros.get(i).getLatitud()))
-                        , (Double.parseDouble(listaBasureros.get(i).getLongitud())));
-
-            //}
-            marcador_.showInfoWindow();
-
-            if (!valor){
-                //VolverPosicion(ultpos);
-            }
-
-
-        //} else {
-            //Toast.makeText(activity, "Lo sentimos, no tenemos Unidades de Basura en estos momentos", Toast.LENGTH_SHORT).show();
-        //}
-        //mMap.setOnMarkerClickListener(this);
-
-        startBikeAnimation(startPosition,endPosition);*/
     }
 
     public static float getBearing(LatLng begin, LatLng end) {
@@ -429,8 +317,8 @@ public class MonitoreoBasureroFragment extends Fragment implements OnMapReadyCal
             public void run() {
                 if (!run) {
                     Log.i("funciones", "Basurero");
-                    dc = new DataConnection(getActivity(), "listarBasureros", pref.getDistritoIdPref(), false);
-                    new MonitoreoBasureroFragment.GetBasureros().execute();
+                    dc = new DataConnection(this, "listarRutasBasureros", pref.getDistritoIdPref(), false);
+                    new MonitoreoBasurero.GetBasureros().execute();
 
                 }else{
                     handler.removeCallbacks(this);
@@ -445,5 +333,17 @@ public class MonitoreoBasureroFragment extends Fragment implements OnMapReadyCal
     public void onStop() {
         run=true;
         super.onStop();
+    }
+
+    public void showToolbar(String tittle, boolean upButton){
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setSubtitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle(tittle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);
+        //CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
+
     }
 }

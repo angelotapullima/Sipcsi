@@ -15,8 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.bufeotec.sipcsi.Activitys.SeguimientoPorUnidad;
-import com.bufeotec.sipcsi.Adapter.ListVehiculosAdapter;
+import com.bufeotec.sipcsi.Activitys.MonitoreoBasurero;
+import com.bufeotec.sipcsi.Adapter.ListBasurerosAdapter;
 import com.bufeotec.sipcsi.Models.Vehiculos;
 import com.bufeotec.sipcsi.R;
 import com.bufeotec.sipcsi.Util.Preferences;
@@ -25,26 +25,29 @@ import com.bufeotec.sipcsi.WebServices.DataConnection;
 import java.util.ArrayList;
 
 
-public class ListVehiculosFragment extends Fragment {
+public class ListCarrosBasurerosFragment extends Fragment {
+
 
 
     Activity activity;
     Context context;
     DataConnection dc;
-    ListVehiculosAdapter listVehiculosAdapter;
     CardView cdv_mensaje;
+    ListBasurerosAdapter listBasurerosAdapter;
     ProgressBar progressBar;
-    RecyclerView rcv_vehiculos;
+    RecyclerView rcv_basureros;
     Preferences pref;
+    public ArrayList<Vehiculos> arrayBasureros;
 
-    public ArrayList<Vehiculos> arrayvehiculos;
 
 
     private OnFragmentInteractionListener mListener;
 
-    public ListVehiculosFragment() {
+    public ListCarrosBasurerosFragment() {
         // Required empty public constructor
     }
+
+
 
 
 
@@ -52,33 +55,27 @@ public class ListVehiculosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_list_vehiculos, container, false);
-
+        View view =  inflater.inflate(R.layout.fragment_list_carros_basureros, container, false);
 
         activity = getActivity();
         context = getContext();
         pref=new Preferences(context);
         getActivity().setTitle("Lista De Vehiculos");
         progressBar = view.findViewById(R.id.progressbar);
-        rcv_vehiculos = view.findViewById(R.id.rcv_vehiculos);
+        rcv_basureros = view.findViewById(R.id.rcv_basureros);
         cdv_mensaje = view.findViewById(R.id.cdv_mensaje);
         cdv_mensaje.setVisibility(View.INVISIBLE);
 
 
-        dc = new DataConnection(getActivity(),"listarVehiculos",pref.getIdUsuarioPref(),false);
-        new GetVehiculos().execute();
+        dc = new DataConnection(getActivity(),"listarBasureros",pref.getIdUsuarioPref(),false);
+        new GetBasureros().execute();
 
         return view;
     }
 
 
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
-
-    public class GetVehiculos extends AsyncTask<Void, Void, Void> {
+    public class GetBasureros extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -87,7 +84,7 @@ public class ListVehiculosFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            arrayvehiculos = dc.getListaVehiculos();
+            arrayBasureros = dc.getListaBasureros();
             return null;
         }
 
@@ -107,13 +104,13 @@ public class ListVehiculosFragment extends Fragment {
 
 
         progressBar.setVisibility(ProgressBar.INVISIBLE);
-        rcv_vehiculos.setHasFixedSize(true);
+        rcv_basureros.setHasFixedSize(true);
 
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        rcv_vehiculos.setLayoutManager(layoutManager);
+        rcv_basureros.setLayoutManager(layoutManager);
 
-        listVehiculosAdapter = new ListVehiculosAdapter(activity, arrayvehiculos, R.layout.rcv_item_vehiculos, new ListVehiculosAdapter.OnItemClickListener() {
+        listBasurerosAdapter = new ListBasurerosAdapter(activity, arrayBasureros, R.layout.rcv_item_basureros, new ListBasurerosAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Vehiculos vehiculos, int position) {
 
@@ -123,7 +120,7 @@ public class ListVehiculosFragment extends Fragment {
                 String to = vehiculos.getTok();
                 String placa = vehiculos.getPlaca();
 
-                Intent i =  new Intent(activity, SeguimientoPorUnidad.class);
+                Intent i =  new Intent(activity, MonitoreoBasurero.class);
 
                 i.putExtra("lat",lat);
                 i.putExtra("long",lon);
@@ -137,11 +134,20 @@ public class ListVehiculosFragment extends Fragment {
             }
         });
 
-        rcv_vehiculos.setAdapter(listVehiculosAdapter);
-        if( arrayvehiculos.size()>0){
+        rcv_basureros.setAdapter(listBasurerosAdapter);
+        if( arrayBasureros.size()>0){
             cdv_mensaje.setVisibility(View.INVISIBLE);
         }else{
             cdv_mensaje.setVisibility(View.VISIBLE);
         }
+    }
+
+
+
+
+
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
     }
 }
