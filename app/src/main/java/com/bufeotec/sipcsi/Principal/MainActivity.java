@@ -59,6 +59,7 @@ import com.bufeotec.sipcsi.BuildConfig;
 import com.bufeotec.sipcsi.Feed.Views.FeedFragment;
 import com.bufeotec.sipcsi.Fragments.AboutFragment;
 import com.bufeotec.sipcsi.Fragments.InformacionFragment;
+import com.bufeotec.sipcsi.Fragments.ListCarrosBasurerosFragment;
 import com.bufeotec.sipcsi.Fragments.TipsFragment;
 import com.bufeotec.sipcsi.Fragments.ListAlertas;
 import com.bufeotec.sipcsi.Fragments.ListMisAlertas;
@@ -68,7 +69,6 @@ import com.bufeotec.sipcsi.Fragments.ListParteApoyoFragment;
 import com.bufeotec.sipcsi.Fragments.ListParteDelitoFragment;
 import com.bufeotec.sipcsi.Fragments.ListVehiculosFragment;
 import com.bufeotec.sipcsi.Fragments.MapsFragment;
-import com.bufeotec.sipcsi.Fragments.MonitoreoBasureroFragment;
 import com.bufeotec.sipcsi.Fragments.NumerosEmergenciaFragment;
 import com.bufeotec.sipcsi.Fragments.ParteFragment;
 import com.bufeotec.sipcsi.Fragments.PerfilFragment;
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         NumerosEmergenciaFragment.OnFragmentInteractionListener,
         PrimerosAuxiliosFragment.OnFragmentInteractionListener,
         ParteFragment.OnFragmentInteractionListener,
-        MonitoreoBasureroFragment.OnFragmentInteractionListener,
+        ListCarrosBasurerosFragment.OnFragmentInteractionListener,
         TipsFragment.OnFragmentInteractionListener,
         ListParteAccidenteFragment.OnFragmentInteractionListener,
         ListParteDelitoFragment.OnFragmentInteractionListener,
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         if(!sharedPreferences.getString("idusuario","").equals("") ){
 
             usuarioid = sharedPreferences.getString("idusuario","");
-            rol_id = sharedPreferences.getString("rol_id","");
+            rol_id = sharedPreferences.getString("rol","");
             token= sharedPreferences.getString ("token","");
             usuario= sharedPreferences.getString ("nickname","");
             clave= sharedPreferences.getString ("clave","");
@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             vehiculoid= sharedPreferences.getString ("vehiculo","");
         }else{
             usuarioid = getIntent().getExtras().getString("idusuario");
-            rol_id = getIntent().getExtras().getString("rol_id");
+            rol_id = getIntent().getExtras().getString("rol");
             token=getIntent().getExtras().getString("token");
             usuario=getIntent().getExtras().getString("nickname");
             clave=getIntent().getExtras().getString("clave");
@@ -179,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             nombreuser=getIntent().getExtras().getString("nombre");
             vehiculoid=getIntent().getExtras().getString("vehiculo");
         }
+        Log.e("rol" ,"id : " +rol_id);
         //intent´s que se reciben al hacer el login
 
 
@@ -224,13 +225,26 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         navigationView.setNavigationItemSelectedListener(this);
 
         if (rol_id.equals("3")){
-            navigationView.getMenu().getItem(1).setVisible(false);
             navigationView.getMenu().getItem(2).setVisible(false);
+            navigationView.getMenu().getItem(3).setVisible(false);
+            navigationView.getMenu().getItem(11).setVisible(false);
         }if (rol_id.equals("4")){
-            navigationView.getMenu().getItem(1).setVisible(false);
             navigationView.getMenu().getItem(2).setVisible(false);
             navigationView.getMenu().getItem(3).setVisible(false);
             navigationView.getMenu().getItem(4).setVisible(false);
+            navigationView.getMenu().getItem(5).setVisible(false);
+            navigationView.getMenu().getItem(7).setVisible(false);
+            navigationView.getMenu().getItem(8).setVisible(false);
+            navigationView.getMenu().getItem(9).setVisible(false);
+            navigationView.getMenu().getItem(11).setVisible(false);
+        }if (rol_id.equals("5")){
+            navigationView.getMenu().getItem(2).setVisible(false);
+            navigationView.getMenu().getItem(3).setVisible(false);
+            navigationView.getMenu().getItem(4).setVisible(false);
+            navigationView.getMenu().getItem(5).setVisible(false);
+            navigationView.getMenu().getItem(7).setVisible(false);
+            navigationView.getMenu().getItem(8).setVisible(false);
+            navigationView.getMenu().getItem(9).setVisible(false);
         }
 
 
@@ -487,7 +501,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
-            fragment= new MonitoreoBasureroFragment();
+            fragment= new ListCarrosBasurerosFragment();
             fragmentTransaction.replace(R.id.contenedor, fragment).addToBackStack("frag").commit();
 
         }

@@ -102,38 +102,7 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    /*public void entrar(){
 
-        if(!sharedPreferences.getString("idusuario","").equals("") ){
-            Intent iprincipal = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(iprincipal);
-            finish();
-        }
-
-
-        String usu = getUserPref();
-        String pas = getClavePref();
-
-        if( !(usu.isEmpty()) && !(pas.isEmpty())){
-
-            frameGif.setVisibility(View.VISIBLE);
-
-            if(isGif(dirImagen)){
-                Glide.with(getApplicationContext()).asGif().load(dirImagen).into(gif);
-            }
-            else{
-                Glide.with(getApplicationContext()).load(dirImagen).into(gif);
-            }
-            obj = new Usuario();
-            obj.setUsuario_nickname(usu);
-            obj.setUsuario_contrasenha(pas);
-
-            dc = new DataConnection(Login.this,"loginUsuario",obj,false);
-            //frameGif.setVisibility(View.GONE);
-
-
-        }
-    }*/
 
     private boolean isGif(String imagen) {
         String extension = "";
@@ -145,16 +114,6 @@ public class Login extends AppCompatActivity {
         return extension.trim().equalsIgnoreCase("gif");
     }
 
-
-   /* private String getUserPref(){
-        return pref.getString("usuario","");
-    }
-    private String getClavePref(){
-        return pref.getString("pass","");
-    }
-
-
-*/
 
 
 

@@ -56,6 +56,8 @@ public class DataConnection extends AppCompatActivity {
     public ArrayList<Alertas> listaAtenciones= new ArrayList();
     public ArrayList<Vehiculos> listaVehiculosAlerta= new ArrayList();
     public ArrayList<Vehiculos> listaBasureros= new ArrayList();
+    public ArrayList<Vehiculos> listaBasurerosActivos= new ArrayList();
+    public ArrayList<Puntos> listaRutasBasureros= new ArrayList();
     public ArrayList<Areas> listaAreas= new ArrayList();
     public ArrayList<Accidentes> listaCausas= new ArrayList();
     public ArrayList<Usuario> listaPerfil= new ArrayList();
@@ -70,6 +72,7 @@ public class DataConnection extends AppCompatActivity {
     Vehiculos vehiculos;
     Alertas alertas;
     Areas areas;
+
     Accidentes accidentes;
     JSONObject json_data;
     public static  final String IP= "www.guabba.com/accidentestransito";
@@ -128,6 +131,7 @@ public class DataConnection extends AppCompatActivity {
         new GetAndSet().execute();
     }
 
+
     public DataConnection( Runnable run,String funcion, Vehiculos vehiculos, boolean mensajeprogres) {
         this.run=run;
         this.funcion=funcion;
@@ -152,7 +156,12 @@ public class DataConnection extends AppCompatActivity {
         new GetAndSet().execute();
     }
 
-
+    public DataConnection(Runnable run, String funcion, String idusuario, boolean mensajeprogres) {
+        this.run=run;
+        this.funcion=funcion;
+        this.mensajeprogres=mensajeprogres;
+        new GetAndSet().execute();
+    }
 
 
     //Enviamos los datos al webservice y devuelve un valor string-respuesta
@@ -238,17 +247,29 @@ public class DataConnection extends AppCompatActivity {
                 parametros = " " + URLEncoder.encode(" ","UTF-8");
                 url = new URL("https://"+IP+"/index.php?c=CausaAccidente&a=listar_causas&key_mobile=123456asdfgh");
 
-            }if (funcion.equals("listarBasureros")){
+            }if (funcion.equals("listarRutasBasureros")){
+                parametros = "id_vehiculo=" + URLEncoder.encode(idusuario,"UTF-8");
+                url = new URL("https://"+IP+"/index.php?c=Rutas&a=listar_ruta_basurero&key_mobile=123456asdfgh");
+            }if (funcion.equals("listarBasurerosActivos")){
                 parametros = "id_distrito=" + URLEncoder.encode(idusuario,"UTF-8");
                 url = new URL("https://"+IP+"/index.php?c=Vehiculo&a=ubicacion_basureros&key_mobile=123456asdfgh");
-            }if (funcion.equals("listarTuristicos")){
+            }
+            if (funcion.equals("listarBasureros")){
+                parametros = "id_usuario=" + URLEncoder.encode(idusuario,"UTF-8");
+                url = new URL("https://"+IP+"/index.php?c=Rutas&a=listar_vehiculos_basureros&key_mobile=123456asdfgh");
+            }
+            if (funcion.equals("listarTuristicos")){
                 parametros = " " + URLEncoder.encode(" ","UTF-8");
                 url = new URL("https://"+IP+"/index.php?c=Mapa&a=puntos_turisticos&key_mobile=123456asdfgh");
 
             }
-            if (funcion.equals("listarPoints")){
-                parametros = " " + URLEncoder.encode(" ","UTF-8");
-                url = new URL("https://"+IP+"/angelo/points.php");
+             if (funcion.equals("editarPerfil")){
+                 parametros = "usuario_nombre=" + URLEncoder.encode(obj.getUsuario_nombre(),"UTF-8")
+                         + "&usuario_apellido=" + URLEncoder.encode(obj.getUsuario_apellido(),"UTF-8")
+                         + "&distrito_id=" + URLEncoder.encode(obj.getDistrito_id(),"UTF-8")
+                         + "&usuario_nickname=" + URLEncoder.encode(obj.getUsuario_nickname(),"UTF-8")
+                         + "&usuario_id=" + URLEncoder.encode(obj.getUsuario_id(),"UTF-8");
+                url = new URL("https://"+IP+"/index.php?c=Usuario&a=editar_perfil&key_mobile=123456asdfgh");
 
             }
 
@@ -602,6 +623,7 @@ public class DataConnection extends AppCompatActivity {
                         obj.setUsuario_nickname(jsonNode.optString("nickname"));
                         obj.setUsuario_contrasenha(jsonNode.optString("contrasenha"));
                         obj.setRol_id(jsonNode.optString("rol_nombre"));
+                        obj.setDistrito_nombre(jsonNode.optString("distrito_nombre"));
 
 
 
@@ -719,18 +741,54 @@ public class DataConnection extends AppCompatActivity {
 
                         obj = new Vehiculos();
                         obj.setId_vehiculo(jsonNode.optString("id_vehiculo"));
-                        obj.setTipo(jsonNode.optString("tipo"));
+                        obj.setMarca(jsonNode.optString("marca"));
+                        obj.setModelo(jsonNode.optString("modelo"));
+                        obj.setPlaca(jsonNode.optString("placa"));
+                        obj.setColor(jsonNode.optString("color"));
+                        //Llenamos los datos al Array
+                        listaBasureros.add(obj);
+                    }
+
+                }
+                if (funcion.equals("listarRutasBasureros")){
+
+                    JSONArray resultJSON = json_data.getJSONArray("results");
+                    int count = resultJSON.length();
+                    Puntos obj;
+
+                    for (int i = 0; i < count;i++){
+
+                        JSONObject jsonNode = resultJSON.getJSONObject(i);
+
+                        obj = new Puntos();
+                        obj.setLat(jsonNode.optString("x"));
+                        obj.setLongitud(jsonNode.optString("y"));
+                        //Llenamos los datos al Array
+                        listaRutasBasureros.add(obj);
+                    }
+
+                } if (funcion.equals("listarBasurerosActivos")){
+
+                    JSONArray resultJSON = json_data.getJSONArray("results");
+                    int count = resultJSON.length();
+                    Vehiculos obj;
+
+                    for (int i = 0; i < count;i++){
+
+                        JSONObject jsonNode = resultJSON.getJSONObject(i);
+
+                        obj = new Vehiculos();
+                        obj.setId_vehiculo(jsonNode.optString("id_vehiculo"));
                         obj.setMarca(jsonNode.optString("marca"));
                         obj.setModelo(jsonNode.optString("modelo"));
                         obj.setPlaca(jsonNode.optString("placa"));
                         obj.setColor(jsonNode.optString("color"));
                         obj.setLatitud(jsonNode.optString("vehiculo_coord_x"));
                         obj.setLongitud(jsonNode.optString("vehiculo_coord_y"));
-                        obj.setLatitud_antiguo(jsonNode.optString("ant_x"));
-                        obj.setLongitud_antiguo(jsonNode.optString("ant_y"));
                         obj.setFecha(jsonNode.optString("fecha"));
+
                         //Llenamos los datos al Array
-                        listaBasureros.add(obj);
+                        listaBasurerosActivos.add(obj);
                     }
 
                 }if(funcion.equals("listarTuristicos")){
@@ -864,14 +922,14 @@ public class DataConnection extends AppCompatActivity {
                     @Override
                     public void run() {
                         if(valorcodigo.equalsIgnoreCase("2")){
-                            Toast.makeText(context, "Datos incorrectos", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Datos incorrectos" + valorcodigo, Toast.LENGTH_SHORT).show();
 
                         }
                         else if(valorcodigo.equalsIgnoreCase("3")){
-                            Toast.makeText(context, "Cuenta desactivada", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Cuenta desactivada" + valorcodigo, Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            Toast.makeText(context, "No tiene permisos", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "No tiene permisos" + valorcodigo, Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -941,8 +999,14 @@ public class DataConnection extends AppCompatActivity {
     public ArrayList<Vehiculos> getListaBasureros(){
         return listaBasureros;
     }
+    public ArrayList<Puntos> getListaRutasBasureros(){
+        return listaRutasBasureros;
+    }
     public ArrayList<Puntos> getListturisticos(){
         return listturisticos;
+    }
+    public ArrayList<Vehiculos> getListaBasurerosActivos(){
+        return listaBasurerosActivos;
     }
 
 

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF"
+    tools:context=".Activitys.EditarPerfil">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:minHeight="?attr/actionBarSize"
+        app:theme="@style/ToolbarColoredBackArrow"
+        android:background="@color/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_height="150dp">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/posible"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="20"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="9"
+                        android:layout_height="wrap_content"
+                        android:text="Nombres"
+                        android:textSize="15sp"/>
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_weight="2"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="9"
+                        android:layout_height="wrap_content"
+                        android:text="Apellidos"
+                        android:textSize="15sp"/>
+
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="20"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_weight="9"
+                        android:id="@+id/perfil_nombre"
+                        android:layout_height="42dp"
+                        android:gravity="center"
+                        android:textSize="14sp"
+                        android:textColor="#000"
+                        android:background="@drawable/borde_gris_texto"
+                        android:hint="Angelo"/>
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="10dp"
+                        android:layout_weight="2"/>
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_weight="9"
+                        android:layout_height="42dp"
+                        android:gravity="center"
+                        android:textSize="14sp"
+                        android:id="@+id/perfil_apellido"
+                        android:textColor="#000"
+                        android:background="@drawable/borde_gris_texto"
+                        android:hint="Tapullima del Aguila"/>
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="20"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="9"
+                        android:layout_height="wrap_content"
+                        android:text="Usuario"
+                        android:textSize="15sp"/>
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_weight="2"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="9"
+                        android:layout_height="wrap_content"
+                        android:text="Distrito"
+                        android:textSize="15sp"/>
+
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="20"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_weight="9"
+                        android:layout_height="42dp"
+                        android:gravity="center"
+                        android:textSize="14sp"
+                        android:textColor="#000"
+                        android:id="@+id/perfil_usuario"
+                        android:background="@drawable/borde_gris_texto"
+                        android:hint="Angelo"/>
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="10dp"
+                        android:layout_weight="2"/>
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_weight="9"
+                        android:layout_height="42dp"
+                        android:gravity="center"
+                        android:textSize="14sp"
+                        android:textColor="#000"
+                        android:id="@+id/perfil_distrito"
+                        android:background="@drawable/borde_gris_texto"
+                        android:hint="Tapullima del Aguila"/>
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="20"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="9"
+                        android:layout_height="wrap_content"
+                        android:text="Email"
+                        android:textSize="15sp"/>
+
+
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:gravity="center"
+                        android:textSize="14sp"
+                        android:textColor="#000"
+                        android:id="@+id/perfil_email"
+                        android:text="bufeo@bufeoTec.com"
+                        android:background="@drawable/borde_gris_texto"
+                        android:hint="Angelo"/>
+
+
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_margin="16dp"
+                android:id="@+id/btnContra"
+                android:gravity="center_vertical|center_horizontal"
+                android:background="@drawable/verde"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Editar Contraseña"
+                    android:textColor="#FFF"
+                    android:padding="10dp"/>
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"/>
+            </LinearLayout>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/verde"
+                android:layout_margin="16dp"
+                android:id="@+id/btnGuardar"
+                android:text="Guardar"
+                android:textColor="#FFF"
+                />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
+
+</RelativeLayout>

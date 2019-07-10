@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bufeotec.sipcsi.Activitys.EditarPerfil;
 import com.bufeotec.sipcsi.Activitys.Login;
 import com.bufeotec.sipcsi.Feed.Models.ModelFeed;
 import com.bufeotec.sipcsi.Feed.Repository.FeedDao;
@@ -98,6 +99,16 @@ public class InformacionFragment extends Fragment implements View.OnClickListene
 
         if (v.equals(Pcerrar)){
             mostrarDialogo();
+        }if(v.equals(Peditar)){
+            Intent i =  new Intent(context, EditarPerfil.class);
+            i.putExtra("nombre",arrayPerfil.get(0).getUsuario_nombre());
+            i.putExtra("apellido",arrayPerfil.get(0).getUsuario_apellido());
+            i.putExtra("usuario",arrayPerfil.get(0).getUsuario_nickname());
+            i.putExtra("distrito",arrayPerfil.get(0).getDistrito_nombre());
+            i.putExtra("dni",arrayPerfil.get(0).getUsuario_dni());
+            i.putExtra("id",arrayPerfil.get(0).getUsuario_id());
+
+            startActivity(i);
         }
 
     }
