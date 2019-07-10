@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,10 +32,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.bufeotec.sipcsi.Models.Alertas;
 import com.bufeotec.sipcsi.Models.Vehiculos;
 import com.bufeotec.sipcsi.R;
+import com.bufeotec.sipcsi.Util.UniversalImageLoader;
 import com.bufeotec.sipcsi.WebServices.DataConnection;
 import com.bufeotec.sipcsi.WebServices.VolleySingleton;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -58,18 +62,19 @@ public class MapaAlertas extends AppCompatActivity implements OnMapReadyCallback
 
     public static final String ALARMA= "ALARMA";
     BroadcastReceiver BR;
-
+    UniversalImageLoader universalImageLoader;
     static GoogleMap mMap;
     static Marker marcador;
     Marker mIni;
     Context context;
-    static DataConnection dc;
+    static DataConnection dc,dc2;
     public static ArrayList<Vehiculos> listavehiculosalertas;
     StringRequest stringRequest;
     Double Alertalatitudes,Alertalongitudes;
     String idAler,tipo,tipo_delito,des,dire,fecA,estado;
     TextView tips, description,direc,fecha;
     Handler handler;
+    ImageView fotoAlerta;
     boolean run = false;
     TextView txtNombre ,txtdes,txtfe ,txtHo;
     Button btnAtendida;
@@ -101,7 +106,9 @@ public class MapaAlertas extends AppCompatActivity implements OnMapReadyCallback
 
 
 
-        //todo modificado como quiere Milhaus
+
+        universalImageLoader = new UniversalImageLoader(context);
+
         View headerLayout1 = findViewById(R.id.bottomJsoft);
         tapactionlayout = (LinearLayout) findViewById(R.id.tap_action_layout);
 
@@ -111,7 +118,7 @@ public class MapaAlertas extends AppCompatActivity implements OnMapReadyCallback
         direc=findViewById(R.id.direc);
         fecha=findViewById(R.id.fecha);
         btnAtendida=findViewById(R.id.btnAtendida);
-
+        fotoAlerta=findViewById(R.id.fotoAlerta);
         botomPuntos=findViewById(R.id.botomPuntos);
         botomTurismo=findViewById(R.id.botomTurismo);
         botomAlertas=findViewById(R.id.botomAlertas);
@@ -204,6 +211,8 @@ public class MapaAlertas extends AppCompatActivity implements OnMapReadyCallback
 
             }
         };
+
+
         ejecutarCadaTiempo();
     }
 
@@ -281,6 +290,7 @@ public class MapaAlertas extends AppCompatActivity implements OnMapReadyCallback
         LatLng latLng = new LatLng(Alertalatitudes, Alertalongitudes);
         mIni = mMap.addMarker(new MarkerOptions()
                 .position(latLng)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
                 .draggable(true)
                 .title("ALERTA"));
 
@@ -333,6 +343,8 @@ public class MapaAlertas extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+    boolean fotex = false;
+
     public void CargarPuntosAMapa() {
 
 
@@ -346,6 +358,22 @@ public class MapaAlertas extends AppCompatActivity implements OnMapReadyCallback
             LatLng ultpos = null;
             for (int i = 0; i < listavehiculosalertas.size(); i++) {
 
+                if (!listavehiculosalertas.get(0).getFoto().equals("0")){
+
+                    if (fotex){
+
+                    }else{
+                        String urlImagen = "https://www.guabba.com/accidentestransito/"+listavehiculosalertas.get(0).getFoto();
+                        Log.e("imagen", "CargarPuntosAMapa: " + urlImagen );
+                        UniversalImageLoader.setImage(urlImagen,fotoAlerta,null);
+                        fotex= true;
+                        //Glide.with(context).load(urlImagen).into(fotoAlerta);
+
+                    }
+
+                }else{
+                    fotoAlerta.setVisibility(View.GONE);
+                }
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(new LatLng((Double.parseDouble(listavehiculosalertas.get(i).getLatitud()))
                         , (Double.parseDouble(listavehiculosalertas.get(i).getLongitud()))))
@@ -472,4 +500,7 @@ public class MapaAlertas extends AppCompatActivity implements OnMapReadyCallback
         }
         return false;
     }
+
+
+
 }

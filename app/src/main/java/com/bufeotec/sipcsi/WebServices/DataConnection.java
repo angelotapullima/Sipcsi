@@ -411,6 +411,7 @@ public class DataConnection extends AppCompatActivity {
                         listpuntos.add(obj);
                     }
                 }
+
                 if(funcion.equals("listarPoints")){
 
                     JSONArray resultJSON = json_data.getJSONArray("results");
@@ -528,6 +529,7 @@ public class DataConnection extends AppCompatActivity {
                         obj.setUsuario(jsonNode.optString("usuario"));
                         obj.setFechora(jsonNode.optString("alerta_fchahora"));
                         obj.setHacetiempo(jsonNode.optString("alerta_fecha_hace"));
+                        obj.setFoto(jsonNode.optString("alerta_imagen"));
 
                         //Llenamos los datos al Array
                         listaVehiculosAlerta.add(obj);

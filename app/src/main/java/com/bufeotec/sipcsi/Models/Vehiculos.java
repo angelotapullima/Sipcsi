@@ -13,6 +13,24 @@ public class Vehiculos {
     private String longitud_antiguo;
     private String tipo;
     private String Hacetiempo;
+    private String foto;
+    private String valorfoto;
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+    public String getValorfoto() {
+        return valorfoto;
+    }
+
+    public void setValorfoto(String valorfoto) {
+        this.valorfoto = valorfoto;
+    }
 
     public String getHacetiempo() {
         return Hacetiempo;

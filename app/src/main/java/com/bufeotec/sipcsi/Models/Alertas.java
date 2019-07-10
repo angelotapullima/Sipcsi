@@ -13,9 +13,18 @@ public class Alertas {
     private String calle_y;
     private String cantidad;
     private String alerta_estado;
+    private String alerta_foto;
 
     public Alertas(){
 
+    }
+
+    public String getAlerta_foto() {
+        return alerta_foto;
+    }
+
+    public void setAlerta_foto(String alerta_foto) {
+        this.alerta_foto = alerta_foto;
     }
 
     public String getCantidad() {

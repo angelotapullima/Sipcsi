@@ -118,7 +118,7 @@ public class DetalleAlarmas extends AppCompatActivity implements OnMapReadyCallb
     CheckBox checkFoto;
     Preferences pref;
     String valorcodigo;
-    String urlGuardar = "https://\"+IP+\"/index.php?c=Alerta&a=guardar&key_mobile=123456asdfgh";
+    String urlGuardar = "https://"+IP+"/index.php?c=Alerta&a=guardar_alerta_imagen&key_mobile=123456asdfgh";
     String tipoNotificacion = "";
     String validaciondireccion = "";
 
@@ -732,32 +732,28 @@ public class DetalleAlarmas extends AppCompatActivity implements OnMapReadyCallb
 
 
     public void uploadMultipart(String idAlertas) {
-        //getting name for the image
-
 
 
         String path = resultUriRecortada.getPath();
 
-        //getting the actual path of the image
+        //File path = new File(resultUriRecortada.getPath());
 
-
-        //Uploading code
         try {
             String uploadId = UUID.randomUUID().toString();
-
+            Log.e("subida", "uploadMultipart: " + path.toString() );
             PendingIntent clickIntent = PendingIntent.getActivity(context, 1,
-                    new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+                    new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
             //Creating a multi part request
-            new MultipartUploadRequest(context, uploadId, urlGuardar)
+            new MultipartUploadRequest(this, uploadId, urlGuardar)
                     .addFileToUpload(path, "imagen") //Adding file
                     .addParameter("id_alerta", idAlertas) //Adding text parameter to the request
-
                     .setNotificationConfig(getNotificationConfig(uploadId,R.string.cargando))
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
 
         } catch (Exception exc) {
             Toast.makeText(context, exc.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e("subida", "uploadMultipart: " + exc.toString() );
         }
     }
 
